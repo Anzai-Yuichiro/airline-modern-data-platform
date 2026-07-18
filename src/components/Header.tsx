@@ -1,0 +1,145 @@
+// src/components/Header.tsx
+import { useState } from 'react';
+import './Header.css';
+
+type CategoryType = 'domestic' | 'international';
+
+export const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<CategoryType>('domestic');
+  const [activeLink, setActiveLink] = useState('#fare');
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleCategoryChange = (category: CategoryType) => {
+    setActiveCategory(category);
+    // Reset active link when switching categories
+    setActiveLink('#fare');
+  };
+
+  // Menu items based on Category
+  const domesticMenu = [
+    { href: '#fare', label: '運賃' },
+    { href: '#timetable', label: '時刻表' },
+    { href: '#inboard', label: '機内サービス' },
+    { href: '#reservation', label: '予約・購入方法' },
+    { href: '#tour', label: '航空券＋ホテル' },
+    { href: '#checkin', label: '空港・チェックイン' },
+    { href: '#mileage', label: 'マイレージ会員' },
+  ];
+
+  const internationalMenu = [
+    { href: '#int-fare', label: '運賃' },
+    { href: '#int-timetable', label: '時刻表' },
+    { href: '#int-inboard', label: '機内サービス' },
+    { href: '#int-reservation', label: '予約・購入方法' },
+    { href: '#int-checkin', label: '空港・チェックイン' },
+    { href: '#int-mileage', label: 'マイレージ会員' },
+  ];
+
+  const currentMenu = activeCategory === 'domestic' ? domesticMenu : internationalMenu;
+
+  return (
+    <header className="sfj-header">
+      <div className="sfj-header-container">
+        
+        {/* Left Side: Logo & Category Tabs */}
+        <div className="sfj-header-left">
+          <div className="sfj-logo">
+            <a href="/">
+              <span className="logo-text">STARFLYER</span>
+            </a>
+          </div>
+          
+          <div className="sfj-category-tabs">
+            <button 
+              className={`category-tab ${activeCategory === 'domestic' ? 'active' : ''}`}
+              onClick={() => handleCategoryChange('domestic')}
+            >
+              国内線
+            </button>
+            <button 
+              className={`category-tab ${activeCategory === 'international' ? 'active' : ''}`}
+              onClick={() => handleCategoryChange('international')}
+            >
+              国際線
+            </button>
+          </div>
+        </div>
+
+        {/* Desktop Navigation */}
+        <nav className="sfj-desktop-nav">
+          <ul className="nav-list">
+            {currentMenu.map((item) => (
+              <li key={item.href}>
+                <a 
+                  href={item.href} 
+                  className={`nav-link ${activeLink === item.href ? 'active' : ''}`}
+                  onClick={() => setActiveLink(item.href)}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        {/* Right side utilities */}
+        <div className="sfj-header-utilities">
+          <a href="#lang" className="lang-switch">EN</a>
+          <a href="#login" className="btn btn-outline">ログイン</a>
+          <a href="#register" className="btn btn-solid">新規入会</a>
+        </div>
+
+        {/* Hamburger Menu (Mobile Only) */}
+        <button 
+          className={`sfj-hamburger ${isMenuOpen ? 'open' : ''}`} 
+          onClick={toggleMenu}
+          aria-label="メニューを開閉"
+          aria-expanded={isMenuOpen}
+        >
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+        </button>
+      </div>
+
+      {/* Mobile Menu Drawer */}
+      <div className={`sfj-mobile-menu ${isMenuOpen ? 'open' : ''}`}>
+        <nav className="sfj-mobile-nav">
+          {/* Mobile Category Toggle */}
+          <div className="mobile-category-tabs">
+            <button 
+              className={`mobile-category-tab ${activeCategory === 'domestic' ? 'active' : ''}`}
+              onClick={() => { handleCategoryChange('domestic'); }}
+            >
+              国内線
+            </button>
+            <button 
+              className={`mobile-category-tab ${activeCategory === 'international' ? 'active' : ''}`}
+              onClick={() => { handleCategoryChange('international'); }}
+            >
+              国際線
+            </button>
+          </div>
+
+          <ul className="mobile-nav-list">
+            {currentMenu.map((item) => (
+              <li key={item.href}>
+                <a href={item.href} onClick={toggleMenu}>
+                  {item.label}
+                </a>
+              </li>
+            ))}
+            <li className="divider"></li>
+            <li><a href="#login" className="mobile-btn mobile-btn-outline" onClick={toggleMenu}>ログイン</a></li>
+            <li><a href="#register" className="mobile-btn mobile-btn-solid" onClick={toggleMenu}>新規入会</a></li>
+            <li><a href="#lang" className="mobile-lang" onClick={toggleMenu}>Language: English</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+  );
+};

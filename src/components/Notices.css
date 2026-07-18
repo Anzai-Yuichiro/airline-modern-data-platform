@@ -1,0 +1,96 @@
+/* src/components/Notices.css */
+.sfj-notices-section {
+  padding: 60px 0 100px;
+  background-color: var(--bg-primary);
+}
+
+/* Notices Tab Switchers */
+.notices-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 2px;
+}
+
+.notices-tab-btn {
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 12px 24px;
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: color var(--transition-speed);
+}
+
+.notices-tab-btn:hover {
+  color: var(--text-primary);
+}
+
+.notices-tab-btn.active {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.notices-tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--text-primary);
+}
+
+/* Notices List */
+.notices-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.notices-item {
+  display: flex;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.95rem;
+}
+
+.notices-item:last-child {
+  border-bottom: none;
+}
+
+.notices-date {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  width: 120px;
+  flex-shrink: 0;
+  letter-spacing: 0.05em;
+}
+
+.notices-title-link {
+  color: var(--text-secondary);
+  transition: color var(--transition-speed);
+  line-height: 1.5;
+}
+
+.notices-title-link:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .notices-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 16px 0;
+  }
+  
+  .notices-date {
+    width: auto;
+  }
+}

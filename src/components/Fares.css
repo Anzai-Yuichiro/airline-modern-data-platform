@@ -1,0 +1,139 @@
+/* src/components/Fares.css */
+.sfj-fares-section {
+  padding: 60px 0;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border);
+}
+
+.section-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Temporary Fares Banner */
+.fares-banner {
+  margin-bottom: 32px;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px dashed var(--border-focus);
+  border-radius: 4px;
+  transition: background-color var(--transition-speed);
+}
+
+.fares-banner a {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+}
+
+.fares-banner:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.banner-badge {
+  background-color: var(--accent-gold);
+  color: var(--bg-primary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.banner-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* Fares Grid */
+.fares-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.fare-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  padding: 24px;
+  border-radius: 4px;
+  transition: all var(--transition-speed);
+}
+
+.fare-card:hover {
+  border-color: var(--border-focus);
+  transform: translateY(-2px);
+}
+
+.route-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.airport-name {
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.route-arrow {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.price-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.fare-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+
+.fare-amount {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.currency {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-right: 2px;
+}
+
+.tax-info {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-left: 2px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .fares-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .fares-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .fares-banner a {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
