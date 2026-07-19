@@ -4,57 +4,69 @@ from apache_beam.options.pipeline_options import PipelineOptions
 import json
 import re
 import os
-import duckdb
+import time
+import requests
 from datetime import datetime
 
-# Define the custom DoFn for loading data into DuckDB
-class WriteToDuckDB(beam.DoFn):
-    def __init__(self, db_path='analytics.db'):
-        self.db_path = db_path
+# Custom DoFn to consume messages from Kafka topic (Streaming source)
+class KafkaSourceDoFn(beam.DoFn):
+    def __init__(self, bootstrap_servers='localhost:9092', topic='raw-events'):
+        self.bootstrap_servers = bootstrap_servers
+        self.topic = topic
 
-    def setup(self):
-        # Create connection and table if not exists during worker setup
-        self.conn = duckdb.connect(self.db_path)
-        self.conn.execute("""
-            CREATE TABLE IF NOT EXISTS events (
-                event_id VARCHAR PRIMARY KEY,
-                session_id VARCHAR,
-                event_name VARCHAR,
-                user_agent VARCHAR,
-                device_type VARCHAR,
-                browser VARCHAR,
-                properties VARCHAR, -- Stored as JSON string for high extensibility
-                timestamp TIMESTAMP
-            )
-        """)
+    def process(self, element):
+        from kafka import KafkaConsumer
+        
+        print(f"[Streaming ETL] Initializing Kafka consumer. Broker: {self.bootstrap_servers}")
+        
+        # Retry loop to connect to Kafka in case the container is still starting
+        consumer = None
+        for i in range(30):
+            try:
+                consumer = KafkaConsumer(
+                    self.topic,
+                    bootstrap_servers=self.bootstrap_servers,
+                    auto_offset_reset='latest',
+                    value_deserializer=lambda x: x.decode('utf-8'),
+                    request_timeout_ms=5000,
+                    api_version=(2, 5, 0)
+                )
+                break
+            except Exception as e:
+                print(f"[Streaming ETL] Waiting for Kafka broker... (Attempt {i+1}/30) | Error: {e}")
+                time.sleep(2)
+        
+        if not consumer:
+            raise Exception("Failed to connect to Kafka broker.")
+
+        print(f"[Streaming ETL] Subscribed to topic '{self.topic}'. Waiting for incoming events...")
+        for message in consumer:
+            yield message.value
+
+# Define the custom DoFn for loading data into DuckDB via Express API Gateway
+class WriteToExpress(beam.DoFn):
+    def __init__(self, api_url='http://localhost:3001/api/analytics/events'):
+        self.api_url = api_url
 
     def process(self, element):
         try:
-            # Insert element dictionary into DuckDB
-            self.conn.execute("""
-                INSERT OR IGNORE INTO events 
-                (event_id, session_id, event_name, user_agent, device_type, browser, properties, timestamp)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """, (
-                element['event_id'],
-                element['session_id'],
-                element['event_name'],
-                element['user_agent'],
-                element['device_type'],
-                element['browser'],
-                json.dumps(element['properties']), # Serialize dict to JSON string
-                element['timestamp']
-            ))
+            # Format timestamp back to string for JSON serialization
+            payload = {
+                **element,
+                'timestamp': element['timestamp'].isoformat()
+            }
+            
+            # Send enriched event to Express server
+            res = requests.post(self.api_url, json=payload, timeout=5)
+            if res.status_code == 200:
+                print(f"[Express Load Success] Loaded event '{element['event_name']}' via Express API Gateway.")
+            else:
+                print(f"[Express Load Error] HTTP status: {res.status_code} | Msg: {res.text}")
             yield element
         except Exception as e:
-            print(f"[DuckDB Load Error] Failed to write event: {e}")
+            print(f"[Express Load Error] Request failed: {e}")
 
-    def teardown(self):
-        # Close connection when worker shuts down
-        if self.conn:
-            self.conn.close()
-
-# Custom PTransform to parse and enrich User-Agent (Transform phase)
+# Custom DoFn to parse and enrich User-Agent (Transform phase)
 class ParseAndEnrichEvent(beam.DoFn):
     def process(self, element):
         try:
@@ -84,12 +96,10 @@ class ParseAndEnrichEvent(beam.DoFn):
             # Parse and format timestamp to ISO standard datetime
             raw_ts = event.get('timestamp')
             try:
-                # Convert ISO 8601 string to Python datetime
                 parsed_ts = datetime.fromisoformat(raw_ts.replace('Z', '+00:00'))
             except Exception:
                 parsed_ts = datetime.utcnow()
 
-            # Enriched data structure matching table schema
             enriched = {
                 'event_id': event.get('event_id'),
                 'session_id': event.get('session_id'),
@@ -106,31 +116,28 @@ class ParseAndEnrichEvent(beam.DoFn):
         except Exception as e:
             print(f"[ETL Parse Error] Failed to process line: {e}")
 
-def run_pipeline(input_file='raw_events.jsonl', db_path='analytics.db'):
+def run_pipeline(bootstrap_servers='localhost:9092', topic='raw-events', api_url='http://localhost:3001/api/analytics/events'):
     # Pipeline options for DirectRunner (local execution)
     options = PipelineOptions([
         '--runner=DirectRunner'
     ])
 
     print(f"=========================================")
-    print(f" Starting Apache Beam ETL Pipeline")
-    print(f" Source: {input_file}")
-    print(f" Destination DuckDB: {db_path}")
+    print(f" Starting Real-Time Kafka Streaming Apache Beam ETL")
+    print(f" Kafka Broker: {bootstrap_servers}")
+    print(f" Topic: {topic}")
+    print(f" Forwarding to: {api_url}")
     print(f"=========================================")
 
-    # Define and run the Beam DAG
+    # Define and run the streaming Beam DAG
     with beam.Pipeline(options=options) as p:
         (
             p
-            | "Read Raw Events" >> beam.io.ReadFromText(input_file)
+            | "Initialize Generator" >> beam.Create([None])
+            | "Subscribe Kafka" >> beam.ParDo(KafkaSourceDoFn(bootstrap_servers, topic))
             | "Parse & Enrich Events" >> beam.ParDo(ParseAndEnrichEvent())
-            | "Load into DuckDB" >> beam.ParDo(WriteToDuckDB(db_path))
+            | "Load into DuckDB via Express" >> beam.ParDo(WriteToExpress(api_url))
         )
 
 if __name__ == '__main__':
-    # Execute the pipeline
-    # Create the raw file if not exists to prevent beam read errors
-    if not os.path.exists('raw_events.jsonl'):
-        with open('raw_events.jsonl', 'w') as f:
-            pass
     run_pipeline()

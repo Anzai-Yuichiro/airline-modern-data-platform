@@ -1,0 +1,396 @@
+/* dashboard/src/features/analytics/web_analytics/WebAnalyticsPage.css */
+
+.web-analytics-view {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Header Row */
+.view-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.view-title {
+  font-size: 1.8rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  margin: 0;
+}
+
+.view-subtitle {
+  font-size: 0.85rem;
+  color: #888888;
+  margin-top: 6px;
+}
+
+.refresh-btn {
+  background-color: #0b0b0b;
+  border: 1px solid #333333;
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.refresh-btn:hover {
+  background-color: #161616;
+  border-color: #555555;
+}
+
+/* Loading & Error States */
+.analytics-loading,
+.analytics-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  gap: 20px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.05);
+  border-top-color: #c5a880;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.analytics-loading p {
+  color: #888888;
+  font-size: 0.9rem;
+}
+
+.retry-btn {
+  background-color: #c5a880;
+  color: #000;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Empty State Notice */
+.data-empty-notice {
+  background-color: rgba(197, 168, 128, 0.08);
+  border: 1px solid #c5a880;
+  border-radius: 8px;
+  padding: 24px;
+  color: #dddddd;
+  line-height: 1.6;
+}
+
+.data-empty-notice strong {
+  display: block;
+  font-size: 1.1rem;
+  color: #c5a880;
+  margin-bottom: 8px;
+}
+
+.data-empty-notice p {
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+}
+
+.setup-commands code {
+  background-color: #000000;
+  color: #c5a880;
+  padding: 10px 16px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.9rem;
+  border: 1px solid #222;
+  display: block;
+  width: fit-content;
+}
+
+/* KPI Grid */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.kpi-card {
+  background-color: #0b0b0b;
+  border: 1px solid #1f1f1f;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.kpi-card.highlighted {
+  border-color: #c5a880;
+  background: linear-gradient(135deg, #0b0b0b 0%, rgba(197, 168, 128, 0.03) 100%);
+}
+
+.kpi-icon {
+  font-size: 1.8rem;
+  width: 48px;
+  height: 48px;
+  background-color: rgba(255, 255, 255, 0.02);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kpi-card.highlighted .kpi-icon {
+  background-color: rgba(197, 168, 128, 0.1);
+}
+
+.kpi-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kpi-label {
+  font-size: 0.75rem;
+  color: #888888;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.kpi-value {
+  font-size: 1.45rem;
+  font-weight: 300;
+  color: #ffffff;
+}
+
+.unit {
+  font-size: 0.75rem;
+  color: #666666;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+.kpi-card.highlighted .kpi-value {
+  color: #c5a880;
+}
+
+/* Charts Grid */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-card {
+  background-color: #0b0b0b;
+  border: 1px solid #1f1f1f;
+  border-radius: 8px;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.chart-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: #dddddd;
+  margin-top: 0;
+  margin-bottom: 24px;
+  border-left: 2.5px solid #c5a880;
+  padding-left: 10px;
+  line-height: 1.2;
+}
+
+/* SVG Trend Chart */
+.svg-trend-chart {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.chart-marker {
+  cursor: pointer;
+}
+
+.chart-marker circle {
+  transition: r 0.2s, stroke-width 0.2s;
+}
+
+.chart-marker:hover circle {
+  r: 6;
+  stroke-width: 3;
+}
+
+.marker-value {
+  font-size: 8px;
+  fill: #ffffff;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+.chart-marker:hover .marker-value {
+  opacity: 1;
+}
+
+.marker-label {
+  font-size: 7px;
+  fill: #555555;
+}
+
+.chart-marker:hover .marker-label {
+  fill: #888888;
+}
+
+/* Donut Chart */
+.donut-chart-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.svg-donut {
+  width: 150px;
+  height: 150px;
+}
+
+.donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.legend-name {
+  color: #aaaaaa;
+  min-width: 60px;
+}
+
+.legend-val {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+/* Routes Bar Chart */
+.routes-bar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.route-bar-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.route-names {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+.route-rank {
+  font-size: 0.7rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid #333;
+  color: #c5a880;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.route-segment {
+  color: #eeeeee;
+  font-weight: 500;
+}
+
+.route-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.route-bar {
+  height: 8px;
+  background-color: #c5a880;
+  border-radius: 4px;
+  min-width: 4px;
+  transition: width 0.6s ease-in-out;
+}
+
+.route-bar-value {
+  font-size: 0.75rem;
+  color: #888888;
+}
+
+/* Browser Rank List */
+.browser-rank-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.browser-rank-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background-color: rgba(255, 255, 255, 0.01);
+  border: 1px solid #161616;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.browser-name {
+  color: #cccccc;
+}
+
+.browser-count {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.no-chart-data {
+  text-align: center;
+  padding: 40px;
+  color: #444444;
+  font-size: 0.85rem;
+  border: 1px dashed #222;
+  border-radius: 6px;
+}

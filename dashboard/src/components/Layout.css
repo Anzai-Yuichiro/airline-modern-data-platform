@@ -1,0 +1,86 @@
+/* dashboard/src/components/Layout.css */
+
+.db-layout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-color: #050505;
+  color: #f5f5f5;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.db-main-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Top Header */
+.db-top-header {
+  height: 64px;
+  background-color: #0b0b0b;
+  border-bottom: 1px solid #1f1f1f;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  box-sizing: border-box;
+}
+
+.header-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: #666666;
+}
+
+.separator {
+  color: #333333;
+}
+
+.active-path {
+  color: #dddddd;
+  font-weight: 500;
+}
+
+.header-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-role {
+  font-size: 0.8rem;
+  color: #888888;
+  font-weight: 500;
+}
+
+.profile-avatar {
+  font-size: 1.1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid #333333;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+/* Content View */
+.db-content-view {
+  flex: 1;
+  padding: 40px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .db-sidebar {
+    display: none; /* In a real dashboard, we'd add a toggle hamburger. Since this is a simple layout desktop analytical console is perfect */
+  }
+}

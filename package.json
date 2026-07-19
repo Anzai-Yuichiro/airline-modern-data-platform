@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "duckdb": "^1.4.4",
     "express": "^4.19.2",
+    "kafkajs": "^2.2.4",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },

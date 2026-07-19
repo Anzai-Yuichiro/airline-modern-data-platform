@@ -25,3 +25,5 @@ dist-ssr
 venv/bin/*
 venv/lib/*
 analytics.db
+analytics.db.wal
+raw_events.jsonl
