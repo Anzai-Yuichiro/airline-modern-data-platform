@@ -1,6 +1,7 @@
 // src/components/Header.tsx
 import { useState } from 'react';
 import './Header.css';
+import { trackEvent } from '../utils/tracker';
 
 type CategoryType = 'domestic' | 'international';
 
@@ -10,13 +11,15 @@ export const Header = () => {
   const [activeLink, setActiveLink] = useState('#fare');
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    const nextState = !isMenuOpen;
+    setIsMenuOpen(nextState);
+    trackEvent('toggle_mobile_menu', { isOpen: nextState });
   };
 
   const handleCategoryChange = (category: CategoryType) => {
     setActiveCategory(category);
-    // Reset active link when switching categories
     setActiveLink('#fare');
+    trackEvent('switch_category', { category });
   };
 
   // Menu items based on Category
@@ -48,7 +51,7 @@ export const Header = () => {
         {/* Left Side: Logo & Category Tabs */}
         <div className="sfj-header-left">
           <div className="sfj-logo">
-            <a href="/">
+            <a href="/" onClick={() => trackEvent('click_logo')}>
               <span className="logo-text">STARFLYER</span>
             </a>
           </div>
@@ -77,7 +80,10 @@ export const Header = () => {
                 <a 
                   href={item.href} 
                   className={`nav-link ${activeLink === item.href ? 'active' : ''}`}
-                  onClick={() => setActiveLink(item.href)}
+                  onClick={() => {
+                    setActiveLink(item.href);
+                    trackEvent('click_nav', { label: item.label, href: item.href, category: activeCategory });
+                  }}
                 >
                   {item.label}
                 </a>
@@ -88,9 +94,9 @@ export const Header = () => {
 
         {/* Right side utilities */}
         <div className="sfj-header-utilities">
-          <a href="#lang" className="lang-switch">EN</a>
-          <a href="#login" className="btn btn-outline">ログイン</a>
-          <a href="#register" className="btn btn-solid">新規入会</a>
+          <a href="#lang" className="lang-switch" onClick={() => trackEvent('click_lang_switch', { lang: 'EN' })}>EN</a>
+          <a href="#login" className="btn btn-outline" onClick={() => trackEvent('click_login_btn', { position: 'header' })}>ログイン</a>
+          <a href="#register" className="btn btn-solid" onClick={() => trackEvent('click_register_btn', { position: 'header' })}>新規入会</a>
         </div>
 
         {/* Hamburger Menu (Mobile Only) */}
@@ -128,15 +134,21 @@ export const Header = () => {
           <ul className="mobile-nav-list">
             {currentMenu.map((item) => (
               <li key={item.href}>
-                <a href={item.href} onClick={toggleMenu}>
+                <a 
+                  href={item.href} 
+                  onClick={() => {
+                    toggleMenu();
+                    trackEvent('click_nav_mobile', { label: item.label, href: item.href, category: activeCategory });
+                  }}
+                >
                   {item.label}
                 </a>
               </li>
             ))}
             <li className="divider"></li>
-            <li><a href="#login" className="mobile-btn mobile-btn-outline" onClick={toggleMenu}>ログイン</a></li>
-            <li><a href="#register" className="mobile-btn mobile-btn-solid" onClick={toggleMenu}>新規入会</a></li>
-            <li><a href="#lang" className="mobile-lang" onClick={toggleMenu}>Language: English</a></li>
+            <li><a href="#login" className="mobile-btn mobile-btn-outline" onClick={() => { toggleMenu(); trackEvent('click_login_btn', { position: 'mobile_menu' }); }}>ログイン</a></li>
+            <li><a href="#register" className="mobile-btn mobile-btn-solid" onClick={() => { toggleMenu(); trackEvent('click_register_btn', { position: 'mobile_menu' }); }}>新規入会</a></li>
+            <li><a href="#lang" className="mobile-lang" onClick={() => { toggleMenu(); trackEvent('click_lang_switch', { lang: 'EN', position: 'mobile_menu' }); }}>Language: English</a></li>
           </ul>
         </nav>
       </div>

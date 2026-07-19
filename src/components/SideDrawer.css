@@ -60,7 +60,7 @@
 .sfj-side-drawer {
   position: fixed;
   top: 0;
-  left: -460px; /* Hidden by default (450px width + 10px shadow buffer) */
+  left: -460px; /* Hidden by default */
   width: 450px;
   height: 100vh;
   background-color: rgba(17, 17, 17, 0.95);
@@ -92,7 +92,7 @@
   color: var(--text-primary);
 }
 
-/* Drawer Content Form */
+/* Drawer Content Panel */
 .drawer-panel-title {
   font-size: 1.5rem;
   font-weight: 300;
@@ -103,20 +103,110 @@
 .drawer-panel-desc {
   font-size: 0.85rem;
   color: var(--text-secondary);
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   line-height: 1.5;
 }
 
+/* Sub Category Selector (Domestic vs International inside drawer) */
+.drawer-category-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 24px;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  padding: 2px;
+  border-radius: 4px;
+}
+
+.category-tab-btn {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 10px;
+  text-align: center;
+  border-radius: 2px;
+  color: var(--text-secondary);
+  transition: all var(--transition-speed);
+}
+
+.category-tab-btn:hover {
+  color: var(--text-primary);
+}
+
+.category-tab-btn.active {
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+/* Sub tabs (Seat search vs Booking search) */
+.drawer-booking-toggle {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+.toggle-sub-tab {
+  flex: 1;
+  text-align: center;
+  padding: 12px 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  position: relative;
+  transition: color var(--transition-speed);
+}
+
+.toggle-sub-tab:hover {
+  color: var(--text-primary);
+}
+
+.toggle-sub-tab.active {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.toggle-sub-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--text-primary);
+}
+
+/* Radio buttons (Round vs One-way) */
+.drawer-trip-type {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 8px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.radio-label input[type="radio"] {
+  accent-color: var(--text-primary);
+  width: 15px;
+  height: 15px;
+}
+
+/* Form Fields */
 .drawer-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
 }
 
 .drawer-field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .drawer-field label {
@@ -135,7 +225,8 @@
   border-radius: 4px;
   outline: none;
   font-size: 0.9rem;
-  height: 48px;
+  height: 46px;
+  width: 100%;
 }
 
 .drawer-field select:focus,
@@ -147,6 +238,7 @@
   filter: invert(1);
 }
 
+/* Buttons */
 .drawer-btn-submit {
   background-color: var(--text-primary);
   color: var(--bg-primary);
@@ -156,7 +248,9 @@
   border-radius: 4px;
   letter-spacing: 0.05em;
   transition: all var(--transition-speed);
-  margin-top: 10px;
+  margin-top: 8px;
+  width: 100%;
+  font-size: 0.9rem;
 }
 
 .drawer-btn-submit:hover {
@@ -172,6 +266,43 @@
   border-radius: 4px;
   font-size: 0.85rem;
   line-height: 1.6;
+}
+
+/* Quick links at the bottom of the drawer panel */
+.drawer-quick-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+
+.quick-link-item {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  transition: color var(--transition-speed);
+}
+
+.quick-link-item:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+.quick-link-btn {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-align: left;
+  transition: color var(--transition-speed);
+  padding: 0;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.quick-link-btn:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
 }
 
 /* Backdrop Overlay */
