@@ -22,11 +22,7 @@ db-cli:
 	duckdb -readonly $(DB_FILE)
 
 db-schema:
-	@node scratch/query_db.cjs "PRAGMA show_tables;"
-	@echo "\n--- Columns in events table ---"
-	@node scratch/query_db.cjs "DESCRIBE events;"
-	@echo "\n--- Columns in members table ---"
-	@node scratch/query_db.cjs "DESCRIBE members;"
+	@node scratch/db_schema.cjs
 
 db-members:
 	@node scratch/query_db.cjs "SELECT member_number, email, last_name_kanji || ' ' || first_name_kanji as name, card_type, miles, created_at FROM members ORDER BY created_at DESC;"
