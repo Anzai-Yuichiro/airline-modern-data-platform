@@ -10,6 +10,7 @@ import { Footer } from './components/Footer';
 import { SideDrawer } from './components/SideDrawer';
 import { LoginPage } from './features/auth/LoginPage';
 import { RegisterPage } from './features/auth/RegisterPage';
+import { FlightSearchPage } from './features/booking/FlightSearchPage';
 import { trackEvent } from './utils/tracker';
 
 function App() {
@@ -21,7 +22,9 @@ function App() {
     const handleHashChange = () => {
       setHash(window.location.hash);
       const currentPath = window.location.hash || '#home';
-      trackEvent('page_view', { path: currentPath });
+      // Strip query parameters from track path
+      const pathOnly = currentPath.split('?')[0];
+      trackEvent('page_view', { path: pathOnly });
       window.scrollTo(0, 0);
     };
 
@@ -29,7 +32,8 @@ function App() {
     
     // Initial page load tracking
     const initialPath = window.location.hash || '#home';
-    trackEvent('page_view', { path: initialPath, load_type: 'initial' });
+    const pathOnly = initialPath.split('?')[0];
+    trackEvent('page_view', { path: pathOnly, load_type: 'initial' });
 
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
@@ -46,6 +50,25 @@ function App() {
       }
     }
   }, []);
+
+  // Function to refresh member miles after booking completion
+  const handleMilesUpdate = () => {
+    if (!loggedInMember) return;
+    
+    fetch('/api/members')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.members) {
+          const updated = data.members.find((m: any) => m.member_number === loggedInMember.member_number);
+          if (updated) {
+            setLoggedInMember(updated);
+            localStorage.setItem('sfj_logged_in_member', JSON.stringify(updated));
+            console.log('[App] Miles successfully updated: ', updated.miles);
+          }
+        }
+      })
+      .catch(err => console.error('[App] Failed to update miles:', err));
+  };
 
   const handleLoginSuccess = (member: any) => {
     setLoggedInMember(member);
@@ -74,6 +97,8 @@ function App() {
           <LoginPage onLoginSuccess={handleLoginSuccess} />
         ) : hash === '#register' ? (
           <RegisterPage />
+        ) : hash.startsWith('#flight-search') ? (
+          <FlightSearchPage loggedInMember={loggedInMember} onMilesUpdate={handleMilesUpdate} />
         ) : (
           <>
             {/* Hero Visual Banner */}

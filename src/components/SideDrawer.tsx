@@ -1,5 +1,5 @@
 // src/components/SideDrawer.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './SideDrawer.css';
 import { trackEvent } from '../utils/tracker';
 
@@ -10,6 +10,9 @@ export const SideDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<DrawerTab>('booking');
   
+  // Dynamic Flights master data
+  const [flights, setFlights] = useState<any[]>([]);
+
   // Booking Pane States
   const [bookingCategory, setBookingCategory] = useState<FlightCategory>('domestic');
   const [tripType, setTripType] = useState<'round' | 'one-way'>('round');
@@ -25,24 +28,35 @@ export const SideDrawer = () => {
   const [rsvDate, setRsvDate] = useState('');
   const [rsvName, setRsvName] = useState('');
 
-  // Airport Lists
-  const domesticAirports = [
-    { code: 'HND', name: '羽田（東京）' },
-    { code: 'KKJ', name: '北九州' },
-    { code: 'FUK', name: '福岡' },
-    { code: 'KIX', name: '関西（大阪）' },
-    { code: 'NGO', name: '中部（名古屋）' },
-    { code: 'UBJ', name: '山口宇部' },
-    { code: 'SDJ', name: '仙台' },
-  ];
+  // Fetch flights on mount for dynamic option building
+  useEffect(() => {
+    fetch('/api/flights')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.flights) {
+          setFlights(data.flights);
+        }
+      })
+      .catch(err => console.error('[SideDrawer] Failed to fetch flights:', err));
+  }, []);
 
-  const internationalAirports = [
-    { code: 'KKJ', name: '北九州' },
-    { code: 'NGO', name: '中部（名古屋）' },
-    { code: 'TPE', name: '台北（桃園）' },
-  ];
+  // Extract unique departure airports for selected category
+  const departureAirports = Array.from(
+    new Map(
+      flights
+        .filter(f => f.category === bookingCategory)
+        .map(f => [f.departure_code, { code: f.departure_code, name: f.departure_name }])
+    ).values()
+  );
 
-  const airports = bookingCategory === 'domestic' ? domesticAirports : internationalAirports;
+  // Extract unique arrival airports based on the selected departure airport
+  const arrivalAirports = Array.from(
+    new Map(
+      flights
+        .filter(f => f.category === bookingCategory && (!from || f.departure_code === from))
+        .map(f => [f.arrival_code, { code: f.arrival_code, name: f.arrival_name }])
+    ).values()
+  );
 
   const handleTabClick = (tab: DrawerTab) => {
     if (isOpen && activeTab === tab) {
@@ -74,9 +88,20 @@ export const SideDrawer = () => {
       passengers_count: passengers
     });
 
-    alert(
-      `空席照会を実行します：\n区分: ${bookingCategory === 'domestic' ? '国内線' : '国際線'}\n旅程: ${tripType === 'round' ? '往復' : '片道'}\n出発地: ${from}\n到着地: ${to}\n出発日: ${depDate}\n復路日: ${retDate || 'なし'}\n人数: ${passengers}名`
-    );
+    setIsOpen(false);
+
+    // Navigate to the dynamic flight search results page hash route with query string
+    const queryParams = new URLSearchParams({
+      from,
+      to,
+      date: depDate,
+      trip: tripType,
+      retDate: tripType === 'round' ? retDate : '',
+      passengers: passengers.toString(),
+      category: bookingCategory
+    });
+
+    window.location.hash = `#flight-search?${queryParams.toString()}`;
   };
 
   const handleRsvSearchSubmit = (e: React.FormEvent) => {
@@ -218,30 +243,30 @@ export const SideDrawer = () => {
                     </label>
                   </div>
 
-                  {/* From & To */}
-                  <div className="drawer-field">
-                    <label>出発地</label>
-                    <select value={from} onChange={(e) => setFrom(e.target.value)} required>
-                      <option value="" disabled>出発地を選択してください</option>
-                      {airports.map(ap => (
-                        <option key={ap.code} value={ap.code} disabled={to === ap.code}>
-                          {ap.name} ({ap.code})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="drawer-field">
-                    <label>到着地</label>
-                    <select value={to} onChange={(e) => setTo(e.target.value)} required>
-                      <option value="" disabled>到着地を選択してください</option>
-                      {airports.map(ap => (
-                        <option key={ap.code} value={ap.code} disabled={from === ap.code}>
-                          {ap.name} ({ap.code})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                   {/* From & To */}
+                   <div className="drawer-field">
+                     <label>出発地</label>
+                     <select value={from} onChange={(e) => setFrom(e.target.value)} required>
+                       <option value="" disabled>出発地を選択してください</option>
+                       {departureAirports.map(ap => (
+                         <option key={ap.code} value={ap.code} disabled={to === ap.code}>
+                           {ap.name} ({ap.code})
+                         </option>
+                       ))}
+                     </select>
+                   </div>
+ 
+                   <div className="drawer-field">
+                     <label>到着地</label>
+                     <select value={to} onChange={(e) => setTo(e.target.value)} required>
+                       <option value="" disabled>到着地を選択してください</option>
+                       {arrivalAirports.map(ap => (
+                         <option key={ap.code} value={ap.code} disabled={from === ap.code}>
+                           {ap.name} ({ap.code})
+                         </option>
+                       ))}
+                     </select>
+                   </div>
 
                   {/* Date Pickers */}
                   <div className="drawer-field">
