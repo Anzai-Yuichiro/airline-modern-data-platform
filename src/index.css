@@ -14,8 +14,14 @@
   --border-focus: #555555;
   --transition-speed: 0.3s;
   --font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  --header-height: 80px;
+  --header-height: 100px;
   --max-width: 1200px;
+}
+
+@media (max-width: 992px) {
+  :root {
+    --header-height: 80px;
+  }
 }
 
 * {
