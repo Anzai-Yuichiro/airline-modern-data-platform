@@ -1,22 +1,56 @@
-# Makefile for querying DuckDB database
+# Makefile for querying DuckDB database and running applications
 
-.PHONY: db-cli db-members db-events db-schema help query
+.PHONY: db-cli db-members db-events db-schema help query run-server run-sim run-dash run-etl run-docker run-all
 
 DB_FILE=analytics.db
 
 help:
 	@echo "=================================================================="
-	@echo " Starflyer Simulator DuckDB Query Utilities"
+	@echo " Starflyer Simulator & Analytics Control Console"
 	@echo "=================================================================="
-	@echo "Available commands:"
-	@echo "  make db-cli       - Open DuckDB CLI console in READ-ONLY mode"
-	@echo "  make db-schema    - Show tables and column definitions"
-	@echo "  make db-members   - Display all registered STAR LINK members"
-	@echo "  make db-events    - Display the latest 20 actions (logs) in DB"
-	@echo "  make query Q=\"...\" - Run a custom SQL query in read-only mode"
-	@echo "                      (e.g., make query Q=\"SELECT count(*) FROM events\")"
+	@echo "Application Run Commands:"
+	@echo "  make run-server     - Start Express Backend Server (Port 3000)"
+	@echo "  make run-sim        - Start Vite Web Simulator (Port 5173)"
+	@echo "  make run-dash       - Start Vite Analytics Dashboard (Port 5174)"
+	@echo "  make run-etl        - Start Python ETL Pipeline (Real-time)"
+	@echo "  make run-docker     - Start Kafka & Infrastructure (Docker Compose)"
+	@echo "  make run-all        - Start Server, Simulator & Dashboard concurrently"
+	@echo ""
+	@echo "Database Commands:"
+	@echo "  make db-cli         - Open DuckDB CLI console in READ-ONLY mode"
+	@echo "  make db-schema      - Show tables and column definitions"
+	@echo "  make db-members     - Display all registered STAR LINK members"
+	@echo "  make db-events      - Display the latest 20 actions (logs) in DB"
+	@echo "  make query Q=\"...\"   - Run a custom SQL query in read-only mode"
+	@echo "                        (e.g., make query Q=\"SELECT count(*) FROM events\")"
 	@echo "=================================================================="
 
+# Run Targets
+run-server:
+	@echo "Starting Backend Server..."
+	npm run server
+
+run-sim:
+	@echo "Starting Web Simulator..."
+	npm run dev
+
+run-dash:
+	@echo "Starting Analytics Dashboard..."
+	npm run --prefix dashboard dev
+
+run-etl:
+	@echo "Starting Python ETL Pipeline..."
+	./venv/bin/python etl_pipeline.py
+
+run-docker:
+	@echo "Starting Zookeeper, Kafka, and infrastructure..."
+	docker-compose up
+
+run-all:
+	@echo "Starting Server, Simulator, and Dashboard concurrently..."
+	@(trap 'kill 0' SIGINT; npm run server & npm run dev & npm run --prefix dashboard dev & wait)
+
+# Database Targets
 db-cli:
 	@type duckdb >/dev/null 2>&1 || (echo "Error: 'duckdb' CLI is not installed on your system." && echo "You can install it with: brew install duckdb" && exit 1)
 	duckdb -readonly $(DB_FILE)
