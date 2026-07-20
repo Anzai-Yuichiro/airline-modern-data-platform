@@ -52,10 +52,10 @@ export const Sidebar = ({ activeFeature, onSelectFeature }: SidebarProps) => {
                 </li>
                 <li>
                   <button 
-                    className={`menu-item disabled ${activeFeature === 'analysis_member' ? 'active' : ''}`}
-                    onClick={() => alert('「会員・マイル分析」機能は現在準備中です。')}
+                    className={`menu-item ${activeFeature === 'analysis_member' ? 'active' : ''}`}
+                    onClick={() => onSelectFeature('analysis_member')}
                   >
-                    <span className="bullet">▫️</span> 会員・マイル分析 <span className="badge">準備中</span>
+                    <span className="bullet">▫️</span> 会員・マイル分析
                   </button>
                 </li>
               </ul>

@@ -23,6 +23,7 @@ const getSessionId = (): string => {
 interface AnalyticsEvent {
   event_id: string;
   session_id: string;
+  member_number?: string;
   event_name: string;
   timestamp: string;
   user_agent: string;
@@ -31,9 +32,21 @@ interface AnalyticsEvent {
 }
 
 export const trackEvent = (eventName: string, properties: Record<string, any> = {}) => {
+  let memberNumber: string | undefined = undefined;
+  try {
+    const memberStr = localStorage.getItem('sfj_logged_in_member');
+    if (memberStr) {
+      const member = JSON.parse(memberStr);
+      memberNumber = member.member_number || undefined;
+    }
+  } catch (e) {
+    console.error('[Tracker] Error reading logged in member:', e);
+  }
+
   const event: AnalyticsEvent = {
     event_id: generateUUID(),
     session_id: getSessionId(),
+    member_number: memberNumber,
     event_name: eventName,
     timestamp: new Date().toISOString(),
     user_agent: navigator.userAgent,

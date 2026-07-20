@@ -310,3 +310,94 @@
     display: flex;
   }
 }
+
+/* STAR LINK Member Status styling in Header */
+.sfj-member-status {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.85rem;
+}
+
+.sfj-member-status .member-info {
+  display: flex;
+  flex-direction: column;
+  color: var(--text-secondary);
+}
+
+.sfj-member-status .member-name {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.sfj-member-status .member-num {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.sfj-member-status .member-miles {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  padding: 4px 10px;
+  border-radius: 4px;
+  color: var(--text-primary);
+}
+
+.sfj-member-status .member-miles strong {
+  color: #c5a880; /* Gold-like accent color for premium touch */
+  font-size: 1.05rem;
+  font-family: 'Outfit', sans-serif;
+}
+
+.sfj-member-status .member-miles .unit {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.sfj-member-status .logout-btn {
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  height: auto;
+}
+
+/* Mobile Member Info styling */
+.mobile-member-info {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+}
+
+.mobile-member-info .label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.05em;
+}
+
+.mobile-member-info .name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.mobile-member-info .num {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  opacity: 0.8;
+}
+
+.mobile-member-info .miles {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.mobile-member-info .miles strong {
+  color: #c5a880;
+  font-size: 1.1rem;
+}
+

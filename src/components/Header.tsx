@@ -5,7 +5,7 @@ import { trackEvent } from '../utils/tracker';
 
 type CategoryType = 'domestic' | 'international';
 
-export const Header = () => {
+export const Header = ({ loggedInMember, onLogout }: { loggedInMember: any | null; onLogout: () => void; }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<CategoryType>('domestic');
   const [activeLink, setActiveLink] = useState('#fare');
@@ -95,8 +95,23 @@ export const Header = () => {
         {/* Right side utilities */}
         <div className="sfj-header-utilities">
           <a href="#lang" className="lang-switch" onClick={() => trackEvent('click_lang_switch', { lang: 'EN' })}>EN</a>
-          <a href="#login" className="btn btn-outline" onClick={() => trackEvent('click_login_btn', { position: 'header' })}>ログイン</a>
-          <a href="#register" className="btn btn-solid" onClick={() => trackEvent('click_register_btn', { position: 'header' })}>新規入会</a>
+          {loggedInMember ? (
+            <div className="sfj-member-status">
+              <span className="member-info">
+                STAR LINK会員: <strong className="member-name">{loggedInMember.last_name_kanji} {loggedInMember.first_name_kanji} 様</strong>
+                <span className="member-num">({loggedInMember.member_number})</span>
+              </span>
+              <span className="member-miles">
+                <strong>{loggedInMember.miles.toLocaleString()}</strong> <span className="unit">マイル</span>
+              </span>
+              <button className="btn btn-outline btn-sm logout-btn" onClick={onLogout}>ログアウト</button>
+            </div>
+          ) : (
+            <>
+              <a href="#login" className="btn btn-outline" onClick={() => trackEvent('click_login_btn', { position: 'header' })}>ログイン</a>
+              <a href="#register" className="btn btn-solid" onClick={() => trackEvent('click_register_btn', { position: 'header' })}>新規入会</a>
+            </>
+          )}
         </div>
 
         {/* Hamburger Menu (Mobile Only) */}
@@ -146,8 +161,32 @@ export const Header = () => {
               </li>
             ))}
             <li className="divider"></li>
-            <li><a href="#login" className="mobile-btn mobile-btn-outline" onClick={() => { toggleMenu(); trackEvent('click_login_btn', { position: 'mobile_menu' }); }}>ログイン</a></li>
-            <li><a href="#register" className="mobile-btn mobile-btn-solid" onClick={() => { toggleMenu(); trackEvent('click_register_btn', { position: 'mobile_menu' }); }}>新規入会</a></li>
+            {loggedInMember ? (
+              <>
+                <li className="mobile-member-info">
+                  <div className="label">STAR LINK会員</div>
+                  <div className="name">{loggedInMember.last_name_kanji} {loggedInMember.first_name_kanji} 様</div>
+                  <div className="num">({loggedInMember.member_number})</div>
+                  <div className="miles">保有マイル: <strong>{loggedInMember.miles.toLocaleString()}</strong> マイル</div>
+                </li>
+                <li>
+                  <button 
+                    className="mobile-btn mobile-btn-outline" 
+                    onClick={() => {
+                      toggleMenu();
+                      onLogout();
+                    }}
+                  >
+                    ログアウト
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li><a href="#login" className="mobile-btn mobile-btn-outline" onClick={() => { toggleMenu(); trackEvent('click_login_btn', { position: 'mobile_menu' }); }}>ログイン</a></li>
+                <li><a href="#register" className="mobile-btn mobile-btn-solid" onClick={() => { toggleMenu(); trackEvent('click_register_btn', { position: 'mobile_menu' }); }}>新規入会</a></li>
+              </>
+            )}
             <li><a href="#lang" className="mobile-lang" onClick={() => { toggleMenu(); trackEvent('click_lang_switch', { lang: 'EN', position: 'mobile_menu' }); }}>Language: English</a></li>
           </ul>
         </nav>

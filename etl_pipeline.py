@@ -113,6 +113,7 @@ class ParseAndEnrichEvent(beam.DoFn):
             enriched = {
                 'event_id': event.get('event_id'),
                 'session_id': event.get('session_id'),
+                'member_number': event.get('member_number'), # Extract member_number
                 'event_name': event.get('event_name'),
                 'user_agent': user_agent,
                 'device_type': device_type,
@@ -121,7 +122,7 @@ class ParseAndEnrichEvent(beam.DoFn):
                 'timestamp': parsed_ts
             }
             
-            print(f"[ETL Processed] Event: {enriched['event_name']} | Device: {enriched['device_type']} | Browser: {enriched['browser']}")
+            print(f"[ETL Processed] Event: {enriched['event_name']} | Device: {enriched['device_type']} | Browser: {enriched['browser']} | Member: {enriched['member_number'] or 'anonymous'}")
             yield enriched
         except Exception as e:
             print(f"[ETL Parse Error] Failed to process line: {e}")
