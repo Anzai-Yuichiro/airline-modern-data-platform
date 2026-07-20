@@ -27,3 +27,17 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_LISTENERS: 'PLAINTEXT://0.0.0.0:29092,PLAINTEXT_HOST://0.0.0.0:9092'
       KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+
+  etl-pipeline:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: etl-pipeline-service
+    depends_on:
+      - kafka
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+      - KAFKA_TOPIC=raw-events
+      - ANALYTICS_API_URL=http://host.docker.internal:3001/api/analytics/events
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

@@ -26,9 +26,10 @@ class KafkaSourceDoFn(beam.DoFn):
                 consumer = KafkaConsumer(
                     self.topic,
                     bootstrap_servers=self.bootstrap_servers,
+                    group_id='beam-etl-group',
                     auto_offset_reset='latest',
+                    enable_auto_commit=True,
                     value_deserializer=lambda x: x.decode('utf-8'),
-                    request_timeout_ms=5000,
                     api_version=(2, 5, 0)
                 )
                 break
@@ -40,8 +41,17 @@ class KafkaSourceDoFn(beam.DoFn):
             raise Exception("Failed to connect to Kafka broker.")
 
         print(f"[Streaming ETL] Subscribed to topic '{self.topic}'. Waiting for incoming events...")
-        for message in consumer:
-            yield message.value
+        
+        # Non-blocking polling loop to allow yielding control back to Beam and prevent hard hangs
+        while True:
+            # Poll for new messages with 500ms timeout
+            records = consumer.poll(timeout_ms=500)
+            for topic_partition, consumer_records in records.items():
+                for record in consumer_records:
+                    yield record.value
+            
+            # Brief sleep to yield execution thread
+            time.sleep(0.1)
 
 # Define the custom DoFn for loading data into DuckDB via Express API Gateway
 class WriteToExpress(beam.DoFn):
@@ -116,20 +126,11 @@ class ParseAndEnrichEvent(beam.DoFn):
         except Exception as e:
             print(f"[ETL Parse Error] Failed to process line: {e}")
 
-def run_pipeline(bootstrap_servers='localhost:9092', topic='raw-events', api_url='http://localhost:3001/api/analytics/events'):
-    # Pipeline options for DirectRunner (local execution)
+def run_pipeline_once(bootstrap_servers, topic, api_url):
     options = PipelineOptions([
         '--runner=DirectRunner'
     ])
-
-    print(f"=========================================")
-    print(f" Starting Real-Time Kafka Streaming Apache Beam ETL")
-    print(f" Kafka Broker: {bootstrap_servers}")
-    print(f" Topic: {topic}")
-    print(f" Forwarding to: {api_url}")
-    print(f"=========================================")
-
-    # Define and run the streaming Beam DAG
+    
     with beam.Pipeline(options=options) as p:
         (
             p
@@ -138,6 +139,27 @@ def run_pipeline(bootstrap_servers='localhost:9092', topic='raw-events', api_url
             | "Parse & Enrich Events" >> beam.ParDo(ParseAndEnrichEvent())
             | "Load into DuckDB via Express" >> beam.ParDo(WriteToExpress(api_url))
         )
+
+def run_pipeline():
+    bootstrap_servers = os.environ.get('KAFKA_BOOTSTRAP_SERVERS', 'localhost:9092')
+    topic = os.environ.get('KAFKA_TOPIC', 'raw-events')
+    api_url = os.environ.get('ANALYTICS_API_URL', 'http://localhost:3001/api/analytics/events')
+
+    print(f"=========================================")
+    print(f" Starting Real-Time Kafka Streaming Apache Beam ETL Daemon")
+    print(f" Kafka Broker: {bootstrap_servers}")
+    print(f" Topic: {topic}")
+    print(f" Forwarding to: {api_url}")
+    print(f"=========================================")
+
+    # Daemon loop to restart pipeline automatically if DirectRunner gRPC channel times out on idleness
+    while True:
+        try:
+            run_pipeline_once(bootstrap_servers, topic, api_url)
+        except Exception as e:
+            print(f"\n[ETL Daemon Warning] Pipeline session closed or timed out: {e}")
+            print("[ETL Daemon Warning] Reconnecting and restarting streaming session in 3 seconds...\n")
+            time.sleep(3)
 
 if __name__ == '__main__':
     run_pipeline()
