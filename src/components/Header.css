@@ -398,6 +398,12 @@
   gap: 12px;
 }
 
+.mega-drawer-col ul.compact-links {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px 16px;
+}
+
 .mega-drawer-col li a {
   font-size: 0.85rem;
   color: var(--text-secondary);

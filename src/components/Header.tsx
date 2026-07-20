@@ -75,7 +75,7 @@ export const Header = ({ loggedInMember, onLogout }: { loggedInMember: any | nul
 
   const currentMenu = activeCategory === 'domestic' ? domesticMenu : internationalMenu;
 
-  // Render content of mega drawer based on active tab
+  // Render content of mega drawer based on active tab (strictly matching official starflyer.jp sitemap)
   const renderMegaDrawerContent = () => {
     if (!activeDrawerTab) return null;
 
@@ -87,27 +87,33 @@ export const Header = ({ loggedInMember, onLogout }: { loggedInMember: any | nul
           <div className="mega-drawer-panel">
             <div className="mega-drawer-columns">
               <div className="mega-drawer-col">
-                <h4>🎟️ 運賃タイプ案内</h4>
+                <h4>✈️ 路線別運賃</h4>
                 <ul>
-                  <li><a href="#fares-promo" onClick={closeMegaDrawer}>早期割引「そら旅21/28/45/55/75」</a></li>
-                  <li><a href="#fares-lastminute" onClick={closeMegaDrawer}>直前割引「そら旅1/7」</a></li>
-                  <li><a href="#fares-standard" onClick={closeMegaDrawer}>大人普通運賃 / 往復割引</a></li>
-                  <li><a href="#fares-special" onClick={closeMegaDrawer}>小児運賃 / シニア割引 / 障がい者割引</a></li>
+                  <li><a href="#fares-hnd-kkj" onClick={closeMegaDrawer}>羽田（東京）⇔ 北九州の運賃</a></li>
+                  <li><a href="#fares-hnd-fuk" onClick={closeMegaDrawer}>羽田（東京）⇔ 福岡の運賃</a></li>
+                  <li><a href="#fares-hnd-kix" onClick={closeMegaDrawer}>羽田（東京）⇔ 関西（大阪）の運賃</a></li>
+                  <li><a href="#fares-ngo-fuk" onClick={closeMegaDrawer}>中部（名古屋）⇔ 福岡の運賃</a></li>
+                  <li><a href="#fares-hnd-ubj" onClick={closeMegaDrawer}>羽田（東京）⇔ 山口宇部の運賃</a></li>
+                  <li><a href="#fares-fuk-sdj" onClick={closeMegaDrawer}>福岡 ⇔ 仙台の運賃</a></li>
                 </ul>
               </div>
               <div className="mega-drawer-col">
-                <h4>📖 ご利用ガイド</h4>
+                <h4>🎟️ 各種運賃案内</h4>
                 <ul>
-                  <li><a href="#fares-conditions" onClick={closeMegaDrawer}>運賃適用条件の一覧</a></li>
-                  <li><a href="#fares-refund" onClick={closeMegaDrawer}>各種手数料・キャンセル料</a></li>
-                  <li><a href="#fares-payment" onClick={closeMegaDrawer}>お支払い・発券期限</a></li>
+                  <li><a href="#fares-special" onClick={closeMegaDrawer}>臨時便情報</a></li>
+                  <li><a href="#fares-early" onClick={closeMegaDrawer}>おトクな事前購入型割引運賃</a></li>
+                  <li><a href="#fares-types" onClick={closeMegaDrawer}>運賃の種類</a></li>
                 </ul>
               </div>
               <div className="mega-drawer-col highlight-col">
-                <h4>💡 お得な耳より情報</h4>
-                <p>スターフライヤーの「そら旅」は早期の予約ほどお得！搭乗予定日の75日前までの予約で最安値にてお求めいただけます。</p>
-                <div className="drawer-action-box">
-                  <span className="price-tag">羽田 - 北九州 ¥9,600〜</span>
+                <h4>🌍 国際線運賃</h4>
+                <ul>
+                  <li><a href="#int-fare" onClick={() => handleCategoryChange('international')}>国際線の運賃はこちら</a></li>
+                </ul>
+                <div className="drawer-promo-box" style={{ marginTop: '16px' }}>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                    スターフライヤーの早期購入割引「そら旅」は、早めのご予約でおトクになります。
+                  </p>
                 </div>
               </div>
             </div>
@@ -118,25 +124,28 @@ export const Header = ({ loggedInMember, onLogout }: { loggedInMember: any | nul
           <div className="mega-drawer-panel">
             <div className="mega-drawer-columns">
               <div className="mega-drawer-col">
-                <h4>📅 時刻表・スケジュール</h4>
+                <h4>📅 国内線時刻表</h4>
                 <ul>
-                  <li><a href="#schedule-search" onClick={closeMegaDrawer}>本日の運航状況・発着検索</a></li>
-                  <li><a href="#schedule-pdf" onClick={closeMegaDrawer}>PDF時刻表ダウンロード</a></li>
-                  <li><a href="#schedule-routes" onClick={closeMegaDrawer}>就航路線マップ</a></li>
+                  <li><a href="#time-hnd-kkj" onClick={closeMegaDrawer}>羽田（東京）⇔ 北九州の時刻表</a></li>
+                  <li><a href="#time-hnd-fuk" onClick={closeMegaDrawer}>羽田（東京）⇔ 福岡の時刻表</a></li>
+                  <li><a href="#time-hnd-kix" onClick={closeMegaDrawer}>羽田（東京）⇔ 関西（大阪）の時刻表</a></li>
+                  <li><a href="#time-ngo-fuk" onClick={closeMegaDrawer}>中部（名古屋）⇔ 福岡の時刻表</a></li>
+                  <li><a href="#time-hnd-ubj" onClick={closeMegaDrawer}>羽田（東京）⇔ 山口宇部の時刻表</a></li>
+                  <li><a href="#time-fuk-sdj" onClick={closeMegaDrawer}>福岡 ⇔ 仙台の時刻表</a></li>
                 </ul>
               </div>
               <div className="mega-drawer-col">
-                <h4>✈️ 主要路線のスケジュール</h4>
+                <h4>🗺️ 路線・運航案内</h4>
                 <ul>
-                  <li><a href="#route-hnd-kkj" onClick={closeMegaDrawer}>東京（羽田） ⇆ 北九州（1日11往復）</a></li>
-                  <li><a href="#route-hnd-fuk" onClick={closeMegaDrawer}>東京（羽田） ⇆ 福岡（1日8往復）</a></li>
-                  <li><a href="#route-hnd-kix" onClick={closeMegaDrawer}>東京（羽田） ⇆ 関西（1日4往復）</a></li>
-                  <li><a href="#route-kkj-tpe" onClick={closeMegaDrawer}>北九州 ⇆ 台北桃園（毎日運航）</a></li>
+                  <li><a href="#flight-info" onClick={closeMegaDrawer}>本日の運航状況</a></li>
+                  <li><a href="#routes-map" onClick={closeMegaDrawer}>就航路線マップ</a></li>
                 </ul>
               </div>
-              <div className="mega-drawer-col info-col">
-                <h4>⚠️ 運航についてのお知らせ</h4>
-                <p>天候不良による遅延・欠航等の情報は、運航状況検索ページよりリアルタイムでご確認いただけます。</p>
+              <div className="mega-drawer-col highlight-col">
+                <h4>🌍 国際線時刻表</h4>
+                <ul>
+                  <li><a href="#int-timetable" onClick={() => handleCategoryChange('international')}>国際線の時刻表はこちら</a></li>
+                </ul>
               </div>
             </div>
           </div>
@@ -146,25 +155,29 @@ export const Header = ({ loggedInMember, onLogout }: { loggedInMember: any | nul
           <div className="mega-drawer-panel">
             <div className="mega-drawer-columns">
               <div className="mega-drawer-col">
-                <h4>💺 シート・機内設備</h4>
+                <h4>💺 機内サービスと設備</h4>
                 <ul>
-                  <li><a href="#services-seat" onClick={closeMegaDrawer}>全席黒のレザーシート（シートピッチ最大91cm）</a></li>
-                  <li><a href="#services-power" onClick={closeMegaDrawer}>全席ACコンセント ＆ USBポート完備</a></li>
-                  <li><a href="#services-lcd" onClick={closeMegaDrawer}>タッチパネル式パーソナルモニター</a></li>
-                  <li><a href="#services-comfort" onClick={closeMegaDrawer}>フットレスト＆ヘッドレストの調整方法</a></li>
+                  <li><a href="#inboard-space" onClick={closeMegaDrawer}>くつろぎの空間設計</a></li>
+                  <li><a href="#inboard-amenity" onClick={closeMegaDrawer}>飛行機内のお飲み物／アメニティ</a></li>
+                  <li><a href="#inboard-program" onClick={closeMegaDrawer}>機内エンターテインメント</a></li>
                 </ul>
               </div>
               <div className="mega-drawer-col">
-                <h4>☕ 機内サービス・お飲み物</h4>
+                <h4>✨ アメニティ・機材</h4>
                 <ul>
-                  <li><a href="#services-drinks" onClick={closeMegaDrawer}>タリーズコーヒー（オリジナルチョコ付き）</a></li>
-                  <li><a href="#services-soup" onClick={closeMegaDrawer}>オリジナルオニオンスープ / 日本茶 / アップルジュース</a></li>
-                  <li><a href="#services-goods" onClick={closeMegaDrawer}>機内販売（スターフライヤー限定グッズ）</a></li>
+                  <li><a href="#inboard-aroma" onClick={closeMegaDrawer}>香りのおもてなし</a></li>
+                  <li><a href="#inboard-magazine" onClick={closeMegaDrawer}>機内誌</a></li>
+                  <li><a href="#inboard-shopping" onClick={closeMegaDrawer}>機内販売</a></li>
+                  <li><a href="#inboard-media" onClick={closeMegaDrawer}>機内広告</a></li>
+                  <li><a href="#inboard-airbus" onClick={closeMegaDrawer}>機材・座席表・シートマップ</a></li>
+                  <li><a href="#inboard-safety" onClick={closeMegaDrawer}>オリジナルセイフティビデオ</a></li>
                 </ul>
               </div>
-              <div className="mega-drawer-col image-col">
-                <h4>✨ ゆとりのくつろぎ空間</h4>
-                <p>他社よりも座席数を抑工程、シート間のスペースを広く確保した贅沢な空間で、快適な空の旅をお楽しみください。</p>
+              <div className="mega-drawer-col highlight-col">
+                <h4>🌍 国際線機内サービス</h4>
+                <ul>
+                  <li><a href="#int-inboard" onClick={() => handleCategoryChange('international')}>国際線の機内サービスはこちら</a></li>
+                </ul>
               </div>
             </div>
           </div>
@@ -174,24 +187,40 @@ export const Header = ({ loggedInMember, onLogout }: { loggedInMember: any | nul
           <div className="mega-drawer-panel">
             <div className="mega-drawer-columns">
               <div className="mega-drawer-col">
-                <h4>💻 インターネット予約</h4>
+                <h4>💻 予約から購入までの流れ</h4>
                 <ul>
-                  <li><a href="#booking-step" onClick={closeMegaDrawer}>オンラインでの予約・購入手順</a></li>
-                  <li><a href="#booking-seat" onClick={closeMegaDrawer}>座席の事前指定・変更方法</a></li>
-                  <li><a href="#booking-receipt" onClick={closeMegaDrawer}>領収書・搭乗証明書のWeb発行</a></li>
+                  <li><a href="#res-beginner" onClick={closeMegaDrawer}>初めての方でも安心 飛行機の乗り方</a></li>
+                  <li><a href="#res-flow" onClick={closeMegaDrawer}>ご予約からご搭乗までの流れ</a></li>
+                  <li><a href="#res-limit" onClick={closeMegaDrawer}>予約開始日およびご購入期限</a></li>
+                  <li><a href="#res-change-fare" onClick={closeMegaDrawer}>予約・購入後の運賃変更について</a></li>
+                  <li><a href="#res-valid" onClick={closeMegaDrawer}>航空券の有効期間</a></li>
+                  <li><a href="#res-eticket" onClick={closeMegaDrawer}>eチケットのご案内</a></li>
+                  <li><a href="#res-seat" onClick={closeMegaDrawer}>事前座席指定サービス</a></li>
+                  <li><a href="#res-mail" onClick={closeMegaDrawer}>搭乗案内メール</a></li>
+                  <li><a href="#res-stockholder" onClick={closeMegaDrawer}>株主優待割引のご利用方法について</a></li>
+                  <li><a href="#res-name" onClick={closeMegaDrawer}>予約時の氏名入力について</a></li>
                 </ul>
               </div>
               <div className="mega-drawer-col">
-                <h4>💳 お支払い方法</h4>
+                <h4>💳 お支払い・領収書</h4>
                 <ul>
-                  <li><a href="#pay-credit" onClick={closeMegaDrawer}>クレジットカード決済</a></li>
-                  <li><a href="#pay-convenience" onClick={closeMegaDrawer}>コンビニエンスストア決済</a></li>
-                  <li><a href="#pay-other" onClick={closeMegaDrawer}>各種モバイル決済 / eチケット控え発行</a></li>
+                  <li><a href="#pay-method" onClick={closeMegaDrawer}>お支払い方法</a></li>
+                  <li><a href="#pay-receipt" onClick={closeMegaDrawer}>領収書・搭乗証明書について</a></li>
+                  <li><a href="#pay-web-receipt" onClick={closeMegaDrawer}>領収書Webサービス</a></li>
+                  <li><a href="#pay-web-proof" onClick={closeMegaDrawer}>搭乗証明書Webサービス</a></li>
                 </ul>
               </div>
-              <div className="mega-drawer-col info-col">
-                <h4>💡 便利なオンライン搭乗</h4>
-                <p>事前にWEBチェックイン・QRコード付eチケット控えを発行いただくと、空港でスムーズにご搭乗いただけます。</p>
+              <div className="mega-drawer-col">
+                <h4>✏️ 変更・払い戻し</h4>
+                <ul>
+                  <li><a href="#change-customer" onClick={closeMegaDrawer}>お客様都合による変更・払い戻し</a></li>
+                  <li><a href="#change-delay" onClick={closeMegaDrawer}>遅延・欠航時に伴う変更・払い戻し</a></li>
+                  <li><a href="#change-loss" onClick={closeMegaDrawer}>航空券の置き忘れ・紛失の場合</a></li>
+                  <li><a href="#change-fee" onClick={closeMegaDrawer}>取消手数料について</a></li>
+                </ul>
+                <div className="drawer-category-link" style={{ marginTop: '24px', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '16px' }}>
+                  <a href="#int-reservation" style={{ color: '#c5a880', fontWeight: 'bold' }} onClick={() => handleCategoryChange('international')}>国際線の予約・購入方法はこちら</a>
+                </div>
               </div>
             </div>
           </div>
@@ -201,23 +230,26 @@ export const Header = ({ loggedInMember, onLogout }: { loggedInMember: any | nul
           <div className="mega-drawer-panel">
             <div className="mega-drawer-columns">
               <div className="mega-drawer-col">
-                <h4>🏨 航空券＋宿泊（ダイナミックパッケージ）</h4>
+                <h4>🏨 ダイナミックパッケージ（航空券+ホテル）</h4>
                 <ul>
-                  <li><a href="#tour-about" onClick={closeMegaDrawer}>フライトとホテルを自由に組み合わせるオリジナルツアー</a></li>
-                  <li><a href="#tour-search" onClick={closeMegaDrawer}>おトクなパックプランの検索・予約</a></li>
-                  <li><a href="#tour-coupon" onClick={closeMegaDrawer}>割引クーポン・キャンペーン情報</a></li>
+                  <li><a href="#tour-point" onClick={closeMegaDrawer}>ダイナミックパッケージとは</a></li>
+                  <li><a href="#tour-guide" onClick={closeMegaDrawer}>操作ガイド</a></li>
+                  <li><a href="#tour-flow" onClick={closeMegaDrawer}>ツアーご出発までの流れ</a></li>
+                  <li><a href="#tour-faq" onClick={closeMegaDrawer}>よくあるご質問</a></li>
                 </ul>
               </div>
               <div className="mega-drawer-col">
-                <h4>🚗 レンタカー・体験プラン</h4>
+                <h4>✏️ 予約・手続き</h4>
                 <ul>
-                  <li><a href="#tour-car" onClick={closeMegaDrawer}>レンタカー追加割引オプション</a></li>
-                  <li><a href="#tour-hotel" onClick={closeMegaDrawer}>スターフライヤー提携ホテル一覧</a></li>
+                  <li><a href="#tour-mng" onClick={closeMegaDrawer}>予約確認・座席指定取り消し・領収書発行</a></li>
+                  <li><a href="#tour-pay" onClick={closeMegaDrawer}>お支払い方法について</a></li>
                 </ul>
               </div>
               <div className="mega-drawer-col highlight-col">
-                <h4>🎁 特典満載のパックツアー</h4>
-                <p>フライトとホテルを別々に予約するより断然おトク！さらにSTAR LINKマイルもフライト分しっかり貯まります。</p>
+                <h4>🗾 観光特集</h4>
+                <ul>
+                  <li><a href="#tourism-dest" onClick={closeMegaDrawer}>国内のおすすめ観光地特集</a></li>
+                </ul>
               </div>
             </div>
           </div>
@@ -227,24 +259,57 @@ export const Header = ({ loggedInMember, onLogout }: { loggedInMember: any | nul
           <div className="mega-drawer-panel">
             <div className="mega-drawer-columns">
               <div className="mega-drawer-col">
-                <h4>🛄 空港でのお手続き</h4>
+                <h4>📍 空港のご案内</h4>
+                <ul className="compact-links">
+                  <li><a href="#checkin-hnd" onClick={closeMegaDrawer}>羽田空港</a></li>
+                  <li><a href="#checkin-kkj" onClick={closeMegaDrawer}>北九州空港</a></li>
+                  <li><a href="#checkin-fuk" onClick={closeMegaDrawer}>福岡空港</a></li>
+                  <li><a href="#checkin-kix" onClick={closeMegaDrawer}>関西空港</a></li>
+                  <li><a href="#checkin-ngo" onClick={closeMegaDrawer}>中部国際空港セントレア</a></li>
+                  <li><a href="#checkin-ubj" onClick={closeMegaDrawer}>山口宇部空港</a></li>
+                  <li><a href="#checkin-sdj" onClick={closeMegaDrawer}>仙台空港</a></li>
+                </ul>
+                <h4 style={{ marginTop: '20px' }}>📱 ご搭乗手続きのご案内</h4>
                 <ul>
-                  <li><a href="#airport-counter" onClick={closeMegaDrawer}>チェックインカウンターの場所（羽田・北九州等）</a></li>
-                  <li><a href="#airport-machine" onClick={closeMegaDrawer}>自動チェックイン機での手続き方法</a></li>
-                  <li><a href="#airport-step" onClick={closeMegaDrawer}>搭乗手続きの流れと締め切り時間</a></li>
+                  <li><a href="#checkin-online" onClick={closeMegaDrawer}>オンラインチェックイン</a></li>
+                  <li><a href="#checkin-counter" onClick={closeMegaDrawer}>空港でのご搭乗手続き</a></li>
+                  <li><a href="#checkin-transit" onClick={closeMegaDrawer}>乗り継ぎのご案内</a></li>
+                  <li><a href="#checkin-vacant" onClick={closeMegaDrawer}>空港での空席・キャンセル待ちについて</a></li>
+                  <li><a href="#checkin-boarding" onClick={closeMegaDrawer}>搭乗案内方法について</a></li>
+                  <li><a href="#checkin-attention" onClick={closeMegaDrawer}>機内でのお願いとご注意</a></li>
                 </ul>
               </div>
               <div className="mega-drawer-col">
-                <h4>📦 手荷物のルール</h4>
+                <h4>🛄 手荷物のご案内</h4>
                 <ul>
-                  <li><a href="#baggage-limit" onClick={closeMegaDrawer}>無料受託手荷物（お預け制限・サイズ）</a></li>
-                  <li><a href="#baggage-cabin" onClick={closeMegaDrawer}>機内持ち込み手荷物の重量・個数制限</a></li>
-                  <li><a href="#baggage-pets" onClick={closeMegaDrawer}>ペットのお預かりサービスについて</a></li>
+                  <li><a href="#luggage-carryon" onClick={closeMegaDrawer}>機内持ち込み手荷物</a></li>
+                  <li><a href="#luggage-checkin" onClick={closeMegaDrawer}>手荷物のお預け</a></li>
+                  <li><a href="#luggage-restricted" onClick={closeMegaDrawer}>制限のある手荷物</a></li>
+                  <li><a href="#luggage-liquid" onClick={closeMegaDrawer}>液体物の持ち込み</a></li>
+                  <li><a href="#luggage-pet" onClick={closeMegaDrawer}>ペットのお預かり</a></li>
+                  <li><a href="#luggage-baby" onClick={closeMegaDrawer}>ベビーカー・車いすのお預かり</a></li>
+                  <li><a href="#luggage-instrument" onClick={closeMegaDrawer}>楽器の持ち込み・お預け</a></li>
+                  <li><a href="#luggage-sports" onClick={closeMegaDrawer}>スポーツ用品のお預かり</a></li>
+                  <li><a href="#luggage-damage" onClick={closeMegaDrawer}>手荷物の破損・紛失について</a></li>
                 </ul>
               </div>
-              <div className="mega-drawer-col info-col">
-                <h4>⚠️ お手続き時間に関するご注意</h4>
-                <p>国内線は出発時刻の20分前までに、国際線は出発時刻の60分前までに保安検査場を通過してください。</p>
+              <div className="mega-drawer-col">
+                <h4>♿ お手伝いが必要なお客様</h4>
+                <ul className="compact-links" style={{ fontSize: '0.8rem' }}>
+                  <li><a href="#assist-walking" onClick={closeMegaDrawer}>歩行の不自由なお客様</a></li>
+                  <li><a href="#assist-medical" onClick={closeMegaDrawer}>病気やけがのあるお客様</a></li>
+                  <li><a href="#assist-visual" onClick={closeMegaDrawer}>目の不自由なお客様</a></li>
+                  <li><a href="#assist-hearing" onClick={closeMegaDrawer}>耳や言葉の不自由なお客様</a></li>
+                  <li><a href="#assist-dogs" onClick={closeMegaDrawer}>身体障がい者補助犬をお連れのお客様</a></li>
+                  <li><a href="#assist-intellectual" onClick={closeMegaDrawer}>知的障がい・発達障がいのあるお客様</a></li>
+                  <li><a href="#assist-kids" onClick={closeMegaDrawer}>お子様一人旅（リトル☆コメット）</a></li>
+                  <li><a href="#assist-baby" onClick={closeMegaDrawer}>赤ちゃんや小さなお子様をお連れのお客様へ</a></li>
+                  <li><a href="#assist-pregnant" onClick={closeMegaDrawer}>妊娠中のお客様へ</a></li>
+                  <li><a href="#assist-senior" onClick={closeMegaDrawer}>ご高齢のお客様へ</a></li>
+                </ul>
+                <div className="drawer-category-link" style={{ marginTop: '20px', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '12px' }}>
+                  <a href="#int-checkin" style={{ color: '#c5a880', fontWeight: 'bold' }} onClick={() => handleCategoryChange('international')}>国際線の空港・チェックインはこちら</a>
+                </div>
               </div>
             </div>
           </div>
@@ -254,26 +319,37 @@ export const Header = ({ loggedInMember, onLogout }: { loggedInMember: any | nul
           <div className="mega-drawer-panel">
             <div className="mega-drawer-columns">
               <div className="mega-drawer-col">
-                <h4>⭐ マイレージプログラム STAR LINK</h4>
+                <h4>⭐ STAR LINKについて</h4>
                 <ul>
-                  <li><a href="#mileage-about" onClick={closeMegaDrawer}>STAR LINKマイルプログラムの魅力と仕組み</a></li>
-                  <li><a href="#mileage-join" onClick={closeMegaDrawer}>新規会員登録（初期 1,000 マイル進呈中！）</a></li>
-                  <li><a href="#mileage-earn" onClick={closeMegaDrawer}>マイルを貯める（フライト購入額の10%マイル付与）</a></li>
-                  <li><a href="#mileage-use" onClick={closeMegaDrawer}>マイルを使う（特典航空券交換・アップグレード）</a></li>
+                  <li><a href="#mile-benefit" onClick={closeMegaDrawer}>会員ログインのメリット</a></li>
+                  <li><a href="#mile-status" onClick={closeMegaDrawer}>ベガ/アルタイルの特典</a></li>
+                  <li><a href="#mile-alliance" onClick={closeMegaDrawer}>提携サービスを利用する</a></li>
+                  <li><a href="#mile-register" onClick={closeMegaDrawer}>STAR LINK会員新規入会</a></li>
+                  <li><a href="#mile-terms" onClick={closeMegaDrawer}>STAR LINK会員規約</a></li>
+                  <li><a href="#mile-app" onClick={closeMegaDrawer}>公式アプリのご案内</a></li>
+                  <li><a href="#mile-coupon" onClick={closeMegaDrawer}>クーポンのご利用方法</a></li>
                 </ul>
               </div>
               <div className="mega-drawer-col">
-                <h4>💳 クレジットカード・ステータス</h4>
+                <h4>貯める</h4>
                 <ul>
-                  <li><a href="#card-sfj" onClick={closeMegaDrawer}>スターフライヤーカードのご紹介</a></li>
-                  <li><a href="#card-benefits" onClick={closeMegaDrawer}>プレミアム会員ステータスとラウンジ利用特典</a></li>
+                  <li><a href="#earn-flight" onClick={closeMegaDrawer}>フライトで貯める</a></li>
+                  <li><a href="#earn-regist" onClick={closeMegaDrawer}>フライトマイルを登録する</a></li>
+                  <li><a href="#earn-life" onClick={closeMegaDrawer}>暮らしで貯める</a></li>
+                  <li><a href="#earn-limit" onClick={closeMegaDrawer}>マイルの有効期限</a></li>
+                  <li><a href="#earn-card" onClick={closeMegaDrawer}>スターフライヤーカードについて</a></li>
                 </ul>
               </div>
-              <div className="mega-drawer-col highlight-col">
-                <h4>🎁 会員登録ですぐにおトク！</h4>
-                <p>マイル会員にご入会いただくと、本シミュレーターでのご予約ごとにフライト金額の10%がマイルとして還元されます。</p>
-                <div className="drawer-action-box">
-                  <a href="#register" className="btn btn-solid btn-sm" onClick={closeMegaDrawer}>新規入会はこちら</a>
+              <div className="mega-drawer-col">
+                <h4>使う</h4>
+                <ul>
+                  <li><a href="#use-ticket" onClick={closeMegaDrawer}>特典航空券と交換する</a></li>
+                  <li><a href="#use-item" onClick={closeMegaDrawer}>アイテム等と交換する</a></li>
+                  <li><a href="#use-point" onClick={closeMegaDrawer}>ポイントと交換する</a></li>
+                  <li><a href="#use-shop" onClick={closeMegaDrawer}>店舗でマイルを使う</a></li>
+                </ul>
+                <div className="drawer-category-link" style={{ marginTop: '24px', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '16px' }}>
+                  <a href="#int-mileage" style={{ color: '#c5a880', fontWeight: 'bold' }} onClick={() => handleCategoryChange('international')}>国際線のマイレージ会員はこちら</a>
                 </div>
               </div>
             </div>
