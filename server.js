@@ -18,6 +18,12 @@ const DB_FILE = path.join(__dirname, 'analytics.db');
 app.use(cors());
 app.use(express.json());
 
+// Safely serialize BigInt to Number/String in JSON responses
+BigInt.prototype.toJSON = function () {
+  const num = Number(this);
+  return Number.isSafeInteger(num) ? num : this.toString();
+};
+
 // Initialize a single persistent DuckDB Database instance (Exclusive read-write lock in Express)
 const db = new duckdb.Database(DB_FILE, (err) => {
   if (err) {
@@ -738,7 +744,170 @@ app.post('/api/bookings/confirm', async (req, res) => {
   }
 });
 
-// 16. Local Dev Concurrency Query Fallback (Only permits localhost connections)
+// =========================================
+// Marketing Automation & Recommendation APIs
+// =========================================
+
+// 16. Cart Abandonment Detection (カゴ落ち検知 API)
+app.get('/api/marketing/abandoned-carts', async (req, res) => {
+  try {
+    // Detect sessions that performed search or select events but never booked
+    const rows = await runQuery(`
+      WITH session_summary AS (
+        SELECT 
+          session_id,
+          MAX(member_number) as member_number,
+          MIN(timestamp) as first_active_at,
+          MAX(timestamp) as last_active_at,
+          MAX(CASE WHEN event_name IN ('search_flights', 'flight_select', 'seat_select') THEN 1 ELSE 0 END) as has_considered,
+          MAX(CASE WHEN event_name = 'book_flight' THEN 1 ELSE 0 END) as has_booked,
+          MAX(json_extract_string(properties, '$.from_airport')) as departure,
+          MAX(json_extract_string(properties, '$.to_airport')) as arrival,
+          MAX(json_extract_string(properties, '$.flight_id')) as flight_id,
+          CAST(COUNT(*) AS INTEGER) as event_count
+        FROM events
+        GROUP BY session_id
+      )
+      SELECT 
+        session_id,
+        member_number,
+        departure,
+        arrival,
+        flight_id,
+        first_active_at,
+        last_active_at,
+        event_count,
+        ROUND((EPOCH(CURRENT_TIMESTAMP) - EPOCH(last_active_at)) / 60.0, 1) as inactive_minutes
+      FROM session_summary
+      WHERE has_considered = 1 AND has_booked = 0
+      ORDER BY last_active_at DESC
+      LIMIT 20
+    `);
+
+    res.json({
+      status: 'success',
+      count: rows.length,
+      abandoned_carts: rows
+    });
+  } catch (err) {
+    console.error('[Abandoned Carts API Error]:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 17. Send Cart Recovery Reminder (リエンゲージメント配信シミュレーション API)
+app.post('/api/marketing/send-reminder', async (req, res) => {
+  const { session_id, member_number, channel, message } = req.body;
+
+  if (!session_id && !member_number) {
+    return res.status(400).json({ error: 'Missing session_id or member_number' });
+  }
+
+  const reminderLog = {
+    campaign_id: `cmp-${Date.now()}`,
+    session_id,
+    member_number: member_number || 'anonymous',
+    channel: channel || 'email',
+    message: message || 'ご検討中のフライトに関するご案内です。お座席を確保しませんか？',
+    sent_at: new Date().toISOString(),
+    status: 'delivered'
+  };
+
+  console.log(`[MA Engine] Sent recovery reminder via ${reminderLog.channel} to session ${session_id}`);
+
+  res.json({
+    status: 'success',
+    data: reminderLog
+  });
+});
+
+// 18. Personalized Flight Recommendations (レコメンド API)
+app.get('/api/recommendations', async (req, res) => {
+  const { member_number, session_id, limit = 3 } = req.query;
+
+  try {
+    let recommendations = [];
+    let memberMiles = 0;
+
+    if (member_number) {
+      const memberRows = await runQuery('SELECT miles FROM members WHERE member_number = ?', [member_number]);
+      if (memberRows && memberRows.length > 0) {
+        memberMiles = Number(memberRows[0].miles || 0);
+      }
+    }
+
+    // 1. Context-driven recommendation based on recent searches
+    let searchRoute = null;
+    if (session_id) {
+      const recentSearch = await runQuery(`
+        SELECT 
+          json_extract_string(properties, '$.from_airport') as dep,
+          json_extract_string(properties, '$.to_airport') as arr
+        FROM events 
+        WHERE session_id = ? AND event_name = 'search_flights' AND properties IS NOT NULL
+        ORDER BY timestamp DESC 
+        LIMIT 1
+      `, [session_id]);
+
+      if (recentSearch && recentSearch.length > 0 && recentSearch[0].dep && recentSearch[0].arr) {
+        searchRoute = recentSearch[0];
+      }
+    }
+
+    // Fetch candidate flights
+    const allFlights = await runQuery('SELECT * FROM flights ORDER BY base_price ASC');
+
+    if (searchRoute) {
+      const matched = allFlights.filter(f => f.departure_code === searchRoute.dep && f.arrival_code === searchRoute.arr);
+      if (matched.length > 0) {
+        recommendations.push({
+          ...matched[0],
+          recommend_type: 'LAST_SEARCHED',
+          recommend_badge: '直近検索した路線',
+          recommend_reason: `あなたが検索した ${matched[0].departure_name} 〜 ${matched[0].arrival_name} の最安プランです`
+        });
+      }
+    }
+
+    // 2. Mileage-driven recommendation if member has enough miles (e.g. >= 4,500 miles)
+    if (memberMiles >= 4500) {
+      const mileFlight = allFlights.find(f => f.flight_id === 'SFJ021' || f.departure_code === 'HND');
+      if (mileFlight && !recommendations.some(r => r.flight_id === mileFlight.flight_id)) {
+        recommendations.push({
+          ...mileFlight,
+          recommend_type: 'MILE_EXCHANGEABLE',
+          recommend_badge: 'マイルで乗れる！',
+          recommend_reason: `保有マイル（${memberMiles.toLocaleString()}マイル）で特典航空券と今すぐ交換可能です`
+        });
+      }
+    }
+
+    // 3. Popular / Default flight recommendations
+    for (const flight of allFlights) {
+      if (recommendations.length >= Number(limit)) break;
+      if (!recommendations.some(r => r.flight_id === flight.flight_id)) {
+        recommendations.push({
+          ...flight,
+          recommend_type: 'POPULAR',
+          recommend_badge: '人気の定番路線',
+          recommend_reason: `${flight.departure_name}〜${flight.arrival_name}便で快適な空の旅を`
+        });
+      }
+    }
+
+    res.json({
+      status: 'success',
+      member_miles: memberMiles,
+      count: recommendations.length,
+      recommendations: recommendations.slice(0, Number(limit))
+    });
+  } catch (err) {
+    console.error('[Recommendations API Error]:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 19. Local Dev Concurrency Query Fallback (Only permits localhost connections)
 app.post('/api/dev/query', (req, res) => {
   const remoteIp = req.socket.remoteAddress;
   if (

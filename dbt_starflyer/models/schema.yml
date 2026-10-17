@@ -1,0 +1,82 @@
+version: 2
+
+models:
+  - name: stg_events
+    description: "クレンジング・展開済みのWebトラッキングイベント"
+    columns:
+      - name: event_id
+        description: "イベント一意ID"
+        tests:
+          - unique
+          - not_null
+      - name: session_id
+        tests:
+          - not_null
+      - name: event_name
+        tests:
+          - not_null
+
+  - name: stg_flights
+    description: "運航便・路線マスタ"
+    columns:
+      - name: flight_id
+        description: "運航便ID"
+        tests:
+          - unique
+          - not_null
+      - name: departure_code
+        tests:
+          - not_null
+      - name: arrival_code
+        tests:
+          - not_null
+
+  - name: stg_members
+    description: "STAR LINK 会員ディメンション"
+    columns:
+      - name: member_number
+        description: "会員番号"
+        tests:
+          - unique
+          - not_null
+      - name: member_tier
+        tests:
+          - accepted_values:
+              values: ['REGULAR', 'VEGA', 'ALTAIR']
+
+  - name: stg_bookings
+    description: "確定予約トランザクション"
+    columns:
+      - name: reservation_number
+        description: "予約確認番号"
+        tests:
+          - unique
+          - not_null
+      - name: outbound_flight_id
+        tests:
+          - relationships:
+              to: ref('stg_flights')
+              field: flight_id
+
+  - name: int_sessions
+    description: "セッション集約中間モデル"
+    columns:
+      - name: session_id
+        tests:
+          - unique
+          - not_null
+
+  - name: mart_funnel_conversion
+    description: "予約ステップ別ファネルCVR分析マート"
+    columns:
+      - name: total_sessions
+        tests:
+          - not_null
+
+  - name: mart_cart_abandonment
+    description: "カゴ落ち検知＆MAリエンゲージメント対象リスト"
+    columns:
+      - name: session_id
+        tests:
+          - unique
+          - not_null

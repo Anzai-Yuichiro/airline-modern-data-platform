@@ -1,6 +1,6 @@
 # Makefile for querying DuckDB database and running applications
 
-.PHONY: db-cli db-members db-events db-schema help query run-server run-sim run-dash run-etl run-docker run-all
+.PHONY: db-cli db-members db-events db-schema help query run-server run-sim run-dash run-etl run-docker run-all dbt-run dbt-test simulate
 
 DB_FILE=analytics.db
 
@@ -9,12 +9,17 @@ help:
 	@echo " Starflyer Simulator & Analytics Control Console"
 	@echo "=================================================================="
 	@echo "Application Run Commands:"
-	@echo "  make run-server     - Start Express Backend Server (Port 3000)"
+	@echo "  make run-server     - Start Express Backend Server (Port 3001)"
 	@echo "  make run-sim        - Start Vite Web Simulator (Port 5173)"
 	@echo "  make run-dash       - Start Vite Analytics Dashboard (Port 5174)"
 	@echo "  make run-etl        - Start Python ETL Pipeline (Real-time)"
 	@echo "  make run-docker     - Start Kafka & Infrastructure (Docker Compose)"
 	@echo "  make run-all        - Start Server, Simulator & Dashboard concurrently"
+	@echo "  make simulate       - Generate simulated user journeys (Searches, Bookings, Carts)"
+	@echo ""
+	@echo "Modern Data Stack (dbt) Commands:"
+	@echo "  make dbt-run        - Execute dbt staging, intermediate, and marts models"
+	@echo "  make dbt-test       - Run dbt data quality and constraint tests"
 	@echo ""
 	@echo "Database Commands:"
 	@echo "  make db-cli         - Open DuckDB CLI console in READ-ONLY mode"
@@ -70,3 +75,16 @@ query:
 		exit 1; \
 	fi
 	@node scratch/query_db.cjs "$(Q)"
+
+simulate:
+	@echo "Running traffic simulation..."
+	python3 scripts/simulate_traffic.py
+
+dbt-run:
+	@echo "Executing dbt models..."
+	cd dbt_starflyer && dbt run --profiles-dir .
+
+dbt-test:
+	@echo "Running dbt tests..."
+	cd dbt_starflyer && dbt test --profiles-dir .
+

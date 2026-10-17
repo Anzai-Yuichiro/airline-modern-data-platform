@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: raw_data
+    schema: main
+    tables:
+      - name: events
+        description: "Apache Beamストリーミングパイプラインから取り込まれたユーザー行動生イベントログ"
+      - name: flights
+        description: "運航スケジュール・路線基本データ"
+      - name: members
+        description: "STAR LINK会員マスタデータ"
+      - name: bookings
+        description: "確定した予約トランザクションレコード"

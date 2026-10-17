@@ -1,0 +1,22 @@
+# dbt_starflyer profiles.yml
+# ローカル検証（DuckDB）および Google Cloud 本番環境（BigQuery）のデュアル構成
+
+dbt_starflyer:
+  target: dev
+  outputs:
+    # 1. ローカル開発環境 (DuckDB)
+    dev:
+      type: duckdb
+      path: '../analytics.db'
+      threads: 4
+
+    # 2. Google Cloud 本番環境 (BigQuery)
+    prod:
+      type: bigquery
+      method: oauth
+      project: "{{ env_var('GCP_PROJECT_ID', 'starflyer-analytics-prod') }}"
+      dataset: "{{ env_var('BQ_DATASET', 'sfj_marts') }}"
+      threads: 4
+      timeout_seconds: 300
+      location: asia-northeast1
+      priority: interactive
