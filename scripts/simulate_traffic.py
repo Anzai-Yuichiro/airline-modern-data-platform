@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 scripts/simulate_traffic.py
-スターフライヤー模擬システム トラフィックシミュレーションスクリプト
+航空会社ECシミュレーション＆データ基盤 トラフィックシミュレーションスクリプト
 
 Web予約サイトのユーザー行動シナリオ（閲覧、フライト検索、座席指定、予約完了、カゴ落ち離脱）を
 自動生成し、API Gateway (Express :3001) に投入してデータ基盤をアクティベートします。
@@ -113,7 +113,7 @@ def simulate_user_journey(scenario_type="booking", member_number=None):
 
 def main():
     print("==================================================")
-    print(" StarFlyer Modern Data Platform Traffic Simulator ")
+    print(" Airline Modern Data Platform Traffic Simulator ")
     print(" Target API: http://localhost:3001")
     print("==================================================")
 

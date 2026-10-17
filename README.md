@@ -1,4 +1,4 @@
-# StarFlyer Real-Time Simulation & Modern Data Platform (SFJ-MDP)
+# Airline Real-Time Simulation & Modern Data Platform (Airline-MDP)
 
 [![React](https://img.shields.io/badge/React-18.x-61DAFB?logo=react&logoColor=black)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -10,18 +10,18 @@
 [![Google Cloud](https://img.shields.io/badge/Google_Cloud-Ready-4285F4?logo=googlecloud&logoColor=white)](https://cloud.google.com/)
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 
-航空会社（スターフライヤー）のWeb予約システムを模したフロントエンドと、**リアルタイム・イベント駆動型モダンデータプラットフォーム（Modern Data Stack on Cloud）**を融合させたエンドツーエンドのデータ基盤実装ポートフォリオです。
+航空会社（Airline）のWeb予約ECサイトの業務ドメインを再現したフロントエンドと、**リアルタイム・イベント駆動型モダンデータプラットフォーム（Modern Data Stack on Cloud）**を融合させたエンドツーエンドのデータ基盤実装ポートフォリオです。
 
 ---
 
 ## 1. プロジェクト概要
 
 ### 解決するビジネス課題
-航空券ECサイト等のWebサービスにおいて、従来の翌日バッチ分析では**「便検索や座席選択まで進んだが決済前に離脱した顧客（カゴ落ち）」**への対応が遅れ、莫大な機会損失が発生していました。
+航空券予約ECサイト等のWebサービスにおいて、従来の翌日バッチ分析では**「便検索や座席選択まで進んだが決済前に離脱した顧客（カゴ落ち）」**への対応が遅れ、莫大な機会損失が発生していました。
 本システムは、ユーザーの閲覧・検索・予約行動ログをリアルタイムに収集・変換し、**イベント発生から5秒以内にDWHへ反映**。即時のファネル分析やカゴ落ち防止施策（マーケティングオートメーション）を実現します。
 
 ### 特徴
-- **フルスタック＆エンドツーエンド**: Webフロント（React/TS）からメッセージング（Kafka/PubSub）、分散処理（Apache Beam）、DWH（DuckDB/BigQuery）、モデリング（dbt）、可視化ダッシュボードまで全レイヤーを完全実装。
+- **フルスタック＆エンドツーエンド**: 航空券予約ECフロント（React/TS）からメッセージング（Kafka/PubSub）、分散処理（Apache Beam）、DWH（DuckDB/BigQuery）、モデリング（dbt）、可視化ダッシュボードまで全レイヤーを完全実装。
 - **ハイブリッド設計**: ローカル環境（Docker Compose）で完全再現可能であり、同時にGoogle Cloud（Cloud Run, Pub/Sub, Dataflow, BigQuery, Terraform）への本番移行に対応。
 - **メダリオンアーキテクチャ**: Bronze（生ログ）→ Silver（クレンジング・Dim/Fact）→ Gold（分析マート）の段階的モデリングとdbt testによる品質保証。
 
@@ -33,7 +33,7 @@
 flowchart TD
     subgraph Client["フロントエンド & トラッカー (React + TS)"]
         User["ユーザー (旅行者)"]
-        WebSimulator["スターフライヤー予約シミュレータ (:5173)"]
+        WebSimulator["航空券予約ECシミュレータ (:5173)"]
         AnalyticsDash["リアルタイム分析ダッシュボード (:5174)"]
     end
 
@@ -75,7 +75,7 @@ flowchart TD
 
 | コンポーネント | 技術スタック | 役割・機能 |
 | :--- | :--- | :--- |
-| **予約シミュレータ** | React, TypeScript, Vite, Tailwind | 路線検索、空席照会、シートマップ座席指定、決済、STAR LINKマイレージ管理 |
+| **予約シミュレータ** | React, TypeScript, Vite, Tailwind | 路線検索、空席照会、シートマップ座席指定、決済、マイレージ会員管理 |
 | **イベント収集Gateway** | Node.js, Express, KafkaJS | 行動ログの非同期受付（応答目標50ms以内）およびKafkaトピックへの配信 |
 | **ストリーミングETL** | Python, Apache Beam, Docker | User-Agent解析（デバイス/ブラウザ判定）、タイムゾーン補正、会員番号の名寄せ |
 | **DWH & モデリング** | DuckDB, Google BigQuery, dbt | メダリオン構造モデリング、dbt test自動検証、予約ファネルCVR分析 |
@@ -114,8 +114,8 @@ dbt_starflyer/models/
 
 ### 1. リポジトリのクローンと依存関係インストール
 ```bash
-git clone https://github.com/Anzai-Yuichiro/starflyer-modern-data-platform.git
-cd starflyer-modern-data-platform
+git clone https://github.com/Anzai-Yuichiro/airline-modern-data-platform.git
+cd airline-modern-data-platform
 
 # フロントエンド & バックエンドの依存関係
 npm install

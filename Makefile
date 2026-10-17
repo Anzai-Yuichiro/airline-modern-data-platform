@@ -6,7 +6,7 @@ DB_FILE=analytics.db
 
 help:
 	@echo "=================================================================="
-	@echo " Starflyer Simulator & Analytics Control Console"
+	@echo " Airline Modern Data Platform Control Console"
 	@echo "=================================================================="
 	@echo "Application Run Commands:"
 	@echo "  make run-server     - Start Express Backend Server (Port 3001)"

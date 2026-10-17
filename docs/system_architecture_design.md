@@ -1,10 +1,10 @@
-# スターフライヤー模擬システム システムアーキテクチャ設計書 (Architecture Design)
+# 航空会社ECシミュレーション＆モダンデータ基盤 システムアーキテクチャ設計書 (Architecture Design)
 
-- **システム名称**: StarFlyer Real-Time Simulation & Modern Data Platform (SFJ-MDP)
+- **システム名称**: Airline Real-Time Simulation & Modern Data Platform (Airline-MDP)
 - **対象環境**: ローカルコンテナ環境（開発・検証） / Google Cloud（本番運用想定）
 - **作成者**: 安西 雄一郎 (Cloud & Data Engineer)
-- **バージョン**: 1.0.0
-- **最終更新日**: 2026-10-03
+- **バージョン**: 1.1.0
+- **最終更新日**: 2026-10-17
 
 ---
 
@@ -36,7 +36,7 @@
 flowchart TD
     subgraph Browser["Webブラウザ (Client)"]
         User["ユーザー (旅行検討者)"]
-        ClientApp["SFJ 予約サイトシミュレータ (Vite :5173)"]
+        ClientApp["航空券予約ECシミュレータ (Vite :5173)"]
         AdminDash["リアルタイム分析ダッシュボード (:5174)"]
     end
 

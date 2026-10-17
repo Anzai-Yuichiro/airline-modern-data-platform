@@ -1,11 +1,11 @@
-# スターフライヤー模擬システム データモデリング＆dbt設計書 (Data Modeling & dbt Design)
+# 航空会社ECシミュレーション＆モダンデータ基盤 データモデリング＆dbt設計書 (Data Modeling & dbt Design)
 
-- **システム名称**: StarFlyer Real-Time Simulation & Modern Data Platform (SFJ-MDP)
+- **システム名称**: Airline Real-Time Simulation & Modern Data Platform (Airline-MDP)
 - **対象レイヤー**: DWH / データレイク / dbtデータ変換レイヤー
 - **モデリング思想**: Medallion Architecture (Bronze / Silver / Gold) & Kimball Dimensional Modeling
 - **作成者**: 安西 雄一郎 (Cloud & Data Engineer)
-- **バージョン**: 1.0.0
-- **最終更新日**: 2026-10-03
+- **バージョン**: 1.1.0
+- **最終更新日**: 2026-10-17
 
 ---
 
@@ -73,7 +73,7 @@ dbt_starflyer/
 #### ① 会員ディメンション (`dim_members`)
 | カラム名 | データ型 | 説明・制約 |
 | :--- | :--- | :--- |
-| `member_number` | VARCHAR (PK) | 会員番号 (SFJ+数字) |
+| `member_number` | VARCHAR (PK) | 会員番号 (10桁の会員識別子) |
 | `member_name_kanji` | VARCHAR | 氏名 (漢字) |
 | `email` | VARCHAR | メールアドレス (マスキング・ハッシュ対応可) |
 | `member_tier` | VARCHAR | 会員ランク (REGULAR / VEGA / ALTAIR) |
@@ -86,7 +86,7 @@ dbt_starflyer/
 #### ② 運航便ディメンション (`dim_flights`)
 | カラム名 | データ型 | 説明・制約 |
 | :--- | :--- | :--- |
-| `flight_id` | VARCHAR (PK) | 便ID (例: SFJ077) |
+| `flight_id` | VARCHAR (PK) | 便ID (例: FL077) |
 | `flight_number` | VARCHAR | 便名 |
 | `departure_code` | VARCHAR | 出発空港コード (HND, KKJ, FUK等) |
 | `arrival_code` | VARCHAR | 到着空港コード |
