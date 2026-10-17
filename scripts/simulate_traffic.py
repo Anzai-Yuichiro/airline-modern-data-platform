@@ -16,11 +16,11 @@ from datetime import datetime, timedelta
 API_BASE = "http://localhost:3001"
 
 ROUTES = [
-    {"from": "HND", "to": "KKJ", "flight_id": "SFJ077", "price": 14800},
-    {"from": "HND", "to": "FUK", "flight_id": "SFJ041", "price": 13500},
-    {"from": "HND", "to": "KIX", "flight_id": "SFJ021", "price": 11000},
-    {"from": "KKJ", "to": "HND", "flight_id": "SFJ076", "price": 14800},
-    {"from": "KKJ", "to": "TPE", "flight_id": "SFJ801", "price": 22000},
+    {"from": "HND", "to": "KKJ", "flight_id": "AL077", "price": 14800},
+    {"from": "HND", "to": "FUK", "flight_id": "AL041", "price": 13500},
+    {"from": "HND", "to": "KIX", "flight_id": "AL021", "price": 11000},
+    {"from": "KKJ", "to": "HND", "flight_id": "AL076", "price": 14800},
+    {"from": "KKJ", "to": "TPE", "flight_id": "AL801", "price": 22000},
 ]
 
 USER_AGENTS = [
@@ -100,7 +100,7 @@ def simulate_user_journey(scenario_type="booking", member_number=None):
         return
 
     # Step 5: Booking Complete
-    rsv_num = f"SFJ{random.randint(100000, 999999)}"
+    rsv_num = f"AL{random.randint(100000, 999999)}"
     send_log(session_id, "book_flight", {
         "reservation_number": rsv_num,
         "outbound_flight_id": route["flight_id"],

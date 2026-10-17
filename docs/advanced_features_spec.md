@@ -114,7 +114,7 @@ flowchart TD
 {
   "recommendations": [
     {
-      "flight_id": "SFJ077",
+      "flight_id": "AL077",
       "flight_number": "77便",
       "departure_code": "HND",
       "departure_name": "羽田",
@@ -128,7 +128,7 @@ flowchart TD
       "recommend_reason": "あなたが昨日検索した羽田〜北九州便の最安値プランです"
     },
     {
-      "flight_id": "SFJ023",
+      "flight_id": "AL023",
       "flight_number": "23便",
       "departure_code": "HND",
       "departure_name": "羽田",

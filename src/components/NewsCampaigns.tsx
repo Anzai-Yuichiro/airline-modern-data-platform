@@ -6,7 +6,7 @@ export const NewsCampaigns = () => {
     {
       id: 1,
       category: 'インフォメーション',
-      title: 'スターフライヤー安心ご予約保険',
+      title: 'あんしん予約キャンセル補償保険',
       desc: '予約時より加入可能！急な予定変更でもキャンセル料を補償する安心の保険プラン。',
       badge: 'NEW',
       link: '#camp1'
@@ -23,14 +23,14 @@ export const NewsCampaigns = () => {
       id: 3,
       category: 'サービス',
       title: '予約時より無料で座席指定可能',
-      desc: 'スターフライヤーなら事前座席指定が無料。全席レザーシート、コンセント完備。',
+      desc: '事前座席指定が全便無料。全席レザーシート、電源コンセント完備。',
       badge: '快適',
       link: '#camp3'
     },
     {
       id: 4,
       category: 'マイレージ',
-      title: 'STAR LINK 新規入会キャンペーン',
+      title: 'AERO MILES 新規入会キャンペーン',
       desc: 'ご搭乗ごとにマイルが貯まる無料プログラム。新規ご入会で1,000マイルプレゼント。',
       badge: 'マイル',
       link: '#camp4'

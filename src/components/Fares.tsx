@@ -3,12 +3,12 @@ import './Fares.css';
 
 export const Fares = () => {
   const fareRoutes = [
-    { from: '羽田（東京）', to: '北九州', label: 'そら旅', price: '11,660' },
-    { from: '羽田（東京）', to: '福岡', label: 'そら旅', price: '9,900' },
-    { from: '羽田（東京）', to: '関西（大阪）', label: 'そら旅', price: '8,580' },
-    { from: '中部（名古屋）', to: '福岡', label: 'そら旅', price: '11,440' },
-    { from: '羽田（東京）', to: '山口宇部', label: 'そら旅', price: '10,670' },
-    { from: '福岡', to: '仙台', label: 'そら旅', price: '14,630' },
+    { from: '羽田（東京）', to: '北九州', label: 'エアロ得', price: '11,660' },
+    { from: '羽田（東京）', to: '福岡', label: 'エアロ得', price: '9,900' },
+    { from: '羽田（東京）', to: '関西（大阪）', label: 'エアロ得', price: '8,580' },
+    { from: '中部（名古屋）', to: '福岡', label: 'エアロ得', price: '11,440' },
+    { from: '羽田（東京）', to: '山口宇部', label: 'エアロ得', price: '10,670' },
+    { from: '福岡', to: '仙台', label: 'エアロ得', price: '14,630' },
   ];
 
   return (

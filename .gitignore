@@ -25,8 +25,8 @@ analytics.db.tmp*
 raw_events.jsonl
 
 # dbt Artifacts
-dbt_starflyer/target/
-dbt_starflyer/dbt_packages/
+dbt_airline/target/
+dbt_airline/dbt_packages/
 
 # Scratch & Temporary
 scratch/

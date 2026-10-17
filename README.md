@@ -88,7 +88,7 @@ flowchart TD
 ## 4. dbt データモデリング構造 (Medallion Architecture)
 
 ```
-dbt_starflyer/models/
+dbt_airline/models/
 ├── staging/                           # 【Silver】ソースデータの型変換・JSON展開
 │   ├── stg_events.sql                 # 行動ログ (from_airport, seat_no等の展開)
 │   ├── stg_flights.sql                # 運航便・路線マスタ

@@ -440,7 +440,7 @@ export const SideDrawer = () => {
               <p className="drawer-panel-desc">出発24時間前から20分前までスマホやPCから手続き可能です。</p>
               <div className="drawer-notice">
                 <strong>オンラインチェックイン対応便：</strong><br />
-                スターフライヤー運航便すべてでご利用いただけます。座席変更や搭乗券のWeb取得が可能です。
+                当社運航便すべてでご利用いただけます。座席変更や搭乗券のWeb取得が可能です。
               </div>
               <button className="drawer-btn-submit" style={{ marginTop: '20px' }} onClick={() => trackEvent('click_online_checkin_submit')}>チェックイン手続きに進む</button>
             </div>

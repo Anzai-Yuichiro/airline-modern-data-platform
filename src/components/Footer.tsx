@@ -41,12 +41,12 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="footer-column">
-          <h4>STAR LINK (マイレージ)</h4>
+          <h4>AERO MILES (マイレージ)</h4>
           <ul>
             <li><a href="#merit">会員ログインのメリット</a></li>
             <li><a href="#get-mile">マイルを貯める</a></li>
             <li><a href="#use-mile">マイルを使う</a></li>
-            <li><a href="#creditcard">スターフライヤーカード</a></li>
+            <li><a href="#creditcard">提携クレジットカード</a></li>
             <li><a href="#app">公式アプリのご案内</a></li>
           </ul>
         </div>
@@ -55,7 +55,7 @@ export const Footer: React.FC = () => {
 
       <div className="footer-bottom">
         <div className="footer-bottom-container container">
-          <div className="footer-logo">STARFLYER</div>
+          <div className="footer-logo">AERO CONNECT</div>
           
           <ul className="footer-legal-links">
             <li><a href="#company">会社情報</a></li>
@@ -65,7 +65,7 @@ export const Footer: React.FC = () => {
           </ul>
           
           <p className="copyright">
-            &copy; 2026 Starflyer Inc. All rights reserved. (Simulation Mockup)
+            &copy; 2026 Aero Connect Airline EC Simulation. All rights reserved.
           </p>
         </div>
       </div>

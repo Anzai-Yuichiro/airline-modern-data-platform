@@ -20,7 +20,7 @@ export const Notices = () => {
     },
     {
       date: '2026.03.20',
-      title: 'STAR LINKマイレージプログラム規約変更のお知らせ',
+      title: 'AERO MILES マイレージプログラム規約変更のお知らせ',
       link: '#news-terms'
     }
   ];

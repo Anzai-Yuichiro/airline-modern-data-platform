@@ -128,7 +128,7 @@ export const FlightSearchPage = ({ loggedInMember, onMilesUpdate }: FlightSearch
 
     const bookingPayload = {
       member_number: loggedInMember?.member_number || null,
-      session_id: localStorage.getItem('sfj_session_id') || 'session-unknown',
+      session_id: sessionStorage.getItem('airline_session_id') || localStorage.getItem('airline_session_id') || 'session-unknown',
       outbound_flight_id: selectedOutbound.flight.flight_id,
       return_flight_id: selectedReturn?.flight.flight_id || null,
       departure_date: params.date,
@@ -304,7 +304,7 @@ export const FlightSearchPage = ({ loggedInMember, onMilesUpdate }: FlightSearch
                       <span className="arr-time">{f.arrival_time}</span>
                     </div>
                     <div className="flight-number-lbl">
-                      <span className="carrier">SFJ</span>
+                      <span className="carrier">AL</span>
                       <strong className="num">{f.flight_number}便</strong>
                       <span className="seats-cap">Airbus A320</span>
                     </div>
@@ -312,22 +312,22 @@ export const FlightSearchPage = ({ loggedInMember, onMilesUpdate }: FlightSearch
 
                   {/* Right Column: Fare Options */}
                   <div className="fare-options-col">
-                    {/* Fare Type 1: STAR 7 */}
+                    {/* Fare Type 1: AERO 7 */}
                     <button 
                       className="fare-selector-btn"
-                      onClick={() => handleSelectOutbound(f, 'そら旅7', f.base_price)}
+                      onClick={() => handleSelectOutbound(f, 'エアロ得7', f.base_price)}
                     >
-                      <span className="fare-name">そら旅7 (STAR 7)</span>
+                      <span className="fare-name">エアロ得7 (AERO 7)</span>
                       <span className="fare-price">{formatYen(f.base_price)}</span>
                       <span className="seat-status ok">○ 空席あり</span>
                     </button>
 
-                    {/* Fare Type 2: STAR 1 */}
+                    {/* Fare Type 2: EXPRESS 1 */}
                     <button 
                       className="fare-selector-btn"
-                      onClick={() => handleSelectOutbound(f, 'そら旅1', f.base_price + 2000)}
+                      onClick={() => handleSelectOutbound(f, '直前割1', f.base_price + 2000)}
                     >
-                      <span className="fare-name">そら旅1 (STAR 1)</span>
+                      <span className="fare-name">直前割1 (EXPRESS 1)</span>
                       <span className="fare-price">{formatYen(f.base_price + 2000)}</span>
                       <span className="seat-status warning">△ 残りわずか</span>
                     </button>
@@ -372,7 +372,7 @@ export const FlightSearchPage = ({ loggedInMember, onMilesUpdate }: FlightSearch
                       <span className="arr-time">{f.arrival_time}</span>
                     </div>
                     <div className="flight-number-lbl">
-                      <span className="carrier">SFJ</span>
+                      <span className="carrier">AL</span>
                       <strong className="num">{f.flight_number}便</strong>
                       <span className="seats-cap">Airbus A320</span>
                     </div>
@@ -382,18 +382,18 @@ export const FlightSearchPage = ({ loggedInMember, onMilesUpdate }: FlightSearch
                   <div className="fare-options-col">
                     <button 
                       className="fare-selector-btn"
-                      onClick={() => handleSelectReturn(f, 'そら旅7', f.base_price)}
+                      onClick={() => handleSelectReturn(f, 'エアロ得7', f.base_price)}
                     >
-                      <span className="fare-name">そら旅7 (STAR 7)</span>
+                      <span className="fare-name">エアロ得7 (AERO 7)</span>
                       <span className="fare-price">{formatYen(f.base_price)}</span>
                       <span className="seat-status ok">○ 空席あり</span>
                     </button>
 
                     <button 
                       className="fare-selector-btn"
-                      onClick={() => handleSelectReturn(f, 'そら旅1', f.base_price + 2000)}
+                      onClick={() => handleSelectReturn(f, '直前割1', f.base_price + 2000)}
                     >
-                      <span className="fare-name">そら旅1 (STAR 1)</span>
+                      <span className="fare-name">直前割1 (EXPRESS 1)</span>
                       <span className="fare-price">{formatYen(f.base_price + 2000)}</span>
                       <span className="seat-status warning">△ 残りわずか</span>
                     </button>
@@ -434,7 +434,7 @@ export const FlightSearchPage = ({ loggedInMember, onMilesUpdate }: FlightSearch
                 <strong>{getAirportName(params.from)}</strong> ➔ <strong>{getAirportName(params.to)}</strong>
               </div>
               <div className="summary-flight-meta">
-                📅 搭乗日: {params.date} {getWeekdayJP(params.date)} | ✈️ 便名: SFJ {selectedOutbound.flight.flight_number}便
+                📅 搭乗日: {params.date} {getWeekdayJP(params.date)} | ✈️ 便名: AL {selectedOutbound.flight.flight_number}便
               </div>
               <div className="summary-time">
                 🕐 出発時刻: {selectedOutbound.flight.departure_time} ➔ 到着時刻: {selectedOutbound.flight.arrival_time}
@@ -452,7 +452,7 @@ export const FlightSearchPage = ({ loggedInMember, onMilesUpdate }: FlightSearch
                   <strong>{getAirportName(params.to)}</strong> ➔ <strong>{getAirportName(params.from)}</strong>
                 </div>
                 <div className="summary-flight-meta">
-                  📅 搭乗日: {params.retDate} {getWeekdayJP(params.retDate)} | ✈️ 便名: SFJ {selectedReturn.flight.flight_number}便
+                  📅 搭乗日: {params.retDate} {getWeekdayJP(params.retDate)} | ✈️ 便名: AL {selectedReturn.flight.flight_number}便
                 </div>
                 <div className="summary-time">
                   🕐 出発時刻: {selectedReturn.flight.departure_time} ➔ 到着時刻: {selectedReturn.flight.arrival_time}
@@ -487,7 +487,7 @@ export const FlightSearchPage = ({ loggedInMember, onMilesUpdate }: FlightSearch
                 </>
               ) : (
                 <>
-                  💡 <a href="#register">STAR LINKに入会</a>して予約すると、このご予約で <strong>{Math.floor((selectedOutbound.price + (selectedReturn?.price || 0)) * passengersCount * 0.10).toLocaleString()} マイル</strong> 貯まります！
+                  💡 <a href="#register">AERO MILESに入会</a>して予約すると、このご予約で <strong>{Math.floor((selectedOutbound.price + (selectedReturn?.price || 0)) * passengersCount * 0.10).toLocaleString()} マイル</strong> 貯まります！
                 </>
               )}
             </div>
@@ -523,7 +523,7 @@ export const FlightSearchPage = ({ loggedInMember, onMilesUpdate }: FlightSearch
         <div className="booking-complete-section">
           <div className="success-icon">✓</div>
           <h2>航空券の予約が完了しました</h2>
-          <p className="congrats-desc">スターフライヤーのご予約が確定いたしました。ご利用ありがとうございます。</p>
+          <p className="congrats-desc">航空券のご予約が確定いたしました。ご利用ありがとうございます。</p>
 
           <div className="reservation-card-box">
             <div className="card-title">ご予約控え</div>
@@ -536,12 +536,12 @@ export const FlightSearchPage = ({ loggedInMember, onMilesUpdate }: FlightSearch
             <div className="rsv-details-list">
               <div className="rsv-detail-item">
                 <span className="lbl">往路便:</span>
-                <span className="val">SFJ {selectedOutbound.flight.flight_number}便 ({getAirportName(params.from)} ➔ {getAirportName(params.to)}) - {params.date}</span>
+                <span className="val">AL {selectedOutbound.flight.flight_number}便 ({getAirportName(params.from)} ➔ {getAirportName(params.to)}) - {params.date}</span>
               </div>
               {selectedReturn && (
                 <div className="rsv-detail-item">
                   <span className="lbl">復路便:</span>
-                  <span className="val">SFJ {selectedReturn.flight.flight_number}便 ({getAirportName(params.to)} ➔ {getAirportName(params.from)}) - {params.retDate}</span>
+                  <span className="val">AL {selectedReturn.flight.flight_number}便 ({getAirportName(params.to)} ➔ {getAirportName(params.from)}) - {params.retDate}</span>
                 </div>
               )}
               <div className="rsv-detail-item">

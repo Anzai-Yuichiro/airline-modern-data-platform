@@ -28,7 +28,7 @@ export const RegisterPage = () => {
     phone_number: '',
     postal_code: '',
     address: '',
-    card_type: 'STAR LINK カード (デジタル会員証)',
+    card_type: 'AERO MILES カード (デジタル会員証)',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -168,7 +168,7 @@ export const RegisterPage = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="example@starflyer.jp"
+                placeholder="example@aero-sample.jp"
                 className="form-control"
                 required
               />
@@ -356,9 +356,9 @@ export const RegisterPage = () => {
             <div className="form-group">
               <label>入会カードの種類 <span className="required">必須</span></label>
               <select name="card_type" value={formData.card_type} onChange={handleChange} className="form-control">
-                <option value="STAR LINK カード (デジタル会員証)">STAR LINK カード (デジタル会員証 - 即時発行)</option>
-                <option value="STAR LINK VISAカード (クレジット機能付き)">STAR LINK VISAカード (クレジット機能付き - 郵送)</option>
-                <option value="STAR LINK JCBカード (クレジット機能付き)">STAR LINK JCBカード (クレジット機能付き - 郵送)</option>
+                <option value="AERO MILES カード (デジタル会員証)">AERO MILES カード (デジタル会員証 - 即時発行)</option>
+                <option value="AERO MILES VISAカード (クレジット機能付き)">AERO MILES VISAカード (クレジット機能付き - 郵送)</option>
+                <option value="AERO MILES JCBカード (クレジット機能付き)">AERO MILES JCBカード (クレジット機能付き - 郵送)</option>
               </select>
             </div>
 
@@ -373,7 +373,7 @@ export const RegisterPage = () => {
         {step === 'confirm' && (
           <div className="register-confirm-view">
             <h3 className="section-title">ご入力内容の確認</h3>
-            <p className="confirm-desc">以下の内容で STAR LINK 会員登録を行います。よろしければ「登録する」ボタンをクリックしてください。</p>
+            <p className="confirm-desc">以下の内容で AERO MILES 会員登録を行います。よろしければ「登録する」ボタンをクリックしてください。</p>
 
             <table className="confirm-table">
               <tbody>
@@ -406,10 +406,10 @@ export const RegisterPage = () => {
           <div className="register-complete-view">
             <div className="success-icon">✓</div>
             <h2>ご入会ありがとうございます</h2>
-            <p className="congrats-text">STAR LINK 会員への新規ご入会が完了いたしました。</p>
+            <p className="congrats-text">AERO MILES 会員への新規ご入会が完了いたしました。</p>
 
             <div className="member-card-box">
-              <div className="member-card-title">STAR LINK 会員証</div>
+              <div className="member-card-title">AERO MILES 会員証</div>
               <div className="member-number-title">あなたの会員番号 (10桁)</div>
               <div className="member-number-val">{issuedMemberNumber}</div>
               <div className="welcome-miles">✨ 新規入会特典として <strong>1,000 マイル</strong> をプレゼントしました！</div>

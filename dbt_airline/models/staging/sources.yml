@@ -9,6 +9,6 @@ sources:
       - name: flights
         description: "運航スケジュール・路線基本データ"
       - name: members
-        description: "STAR LINK会員マスタデータ"
+        description: "AERO MILES会員マスタデータ"
       - name: bookings
         description: "確定した予約トランザクションレコード"

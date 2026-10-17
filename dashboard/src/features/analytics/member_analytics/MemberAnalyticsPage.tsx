@@ -172,7 +172,7 @@ export const MemberAnalyticsPage = () => {
   return (
     <div className="member-analytics-page">
       <div className="page-header">
-        <h2 className="view-title">会員・マイル分析 (STAR LINK)</h2>
+        <h2 className="view-title">会員・マイル分析 (AERO MILES)</h2>
         <p className="view-subtitle">登録された会員マスターデータ管理と、ログイン会員のリアルタイム行動トラッキングを可視化します。</p>
       </div>
 

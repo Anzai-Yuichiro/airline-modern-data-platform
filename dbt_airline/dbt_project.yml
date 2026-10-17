@@ -1,8 +1,8 @@
-name: 'dbt_starflyer'
+name: 'dbt_airline'
 version: '1.0.0'
 config-version: 2
 
-profile: 'dbt_starflyer'
+profile: 'dbt_airline'
 
 model-paths: ["models"]
 analysis-paths: ["analyses"]
@@ -16,7 +16,7 @@ clean-targets:
   - "dbt_packages"
 
 models:
-  dbt_starflyer:
+  dbt_airline:
     staging:
       +materialized: view
       +schema: staging

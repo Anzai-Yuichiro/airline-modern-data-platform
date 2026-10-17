@@ -32,7 +32,7 @@ models:
           - not_null
 
   - name: stg_members
-    description: "STAR LINK 会員ディメンション"
+    description: "AERO MILES 会員ディメンション"
     columns:
       - name: member_number
         description: "会員番号"

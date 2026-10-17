@@ -1,6 +1,6 @@
-# スターフライヤー公式サイト 構成図（サイトマップ）
+# 航空会社Web予約EC サイト構成図（サイトマップ）
 
-Webサイトのシミュレーション（モックアップ開発）を目的とした構成図です。
+航空券予約ECプラットフォームのWebシミュレーション（モックアップ開発）を目的とした構成図です。
 
 ## 全体構造図 (Mermaid)
 
@@ -38,7 +38,7 @@ graph TD
     Airport --> Support[お手伝いが必要なお客様へ]
 
     %% マイレージ
-    Home --> Mileage[STAR LINK<br/>マイレージ]
+    Home --> Mileage[AERO MILES<br/>マイレージ]
     Mileage --> Login[ログイン・新規入会]
     Mileage --> Earn[マイルを貯める]
     Mileage --> Use[マイルを使う]

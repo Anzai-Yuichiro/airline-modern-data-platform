@@ -14,7 +14,7 @@ export const Sidebar = ({ activeFeature, onSelectFeature }: SidebarProps) => {
     <aside className="db-sidebar">
       {/* Brand Header */}
       <div className="db-sidebar-brand">
-        <span className="brand-logo">STARFLYER</span>
+        <span className="brand-logo">AERO CONNECT</span>
         <span className="brand-subtitle">CONSOLE & ANALYTICS</span>
       </div>
 

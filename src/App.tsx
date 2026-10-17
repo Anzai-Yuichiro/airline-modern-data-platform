@@ -40,13 +40,13 @@ function App() {
 
   // Retrieve logged-in session on mount
   useEffect(() => {
-    const savedMember = localStorage.getItem('sfj_logged_in_member');
+    const savedMember = localStorage.getItem('airline_logged_in_member');
     if (savedMember) {
       try {
         setLoggedInMember(JSON.parse(savedMember));
       } catch (e) {
         console.error('[App] Failed to load saved member session:', e);
-        localStorage.removeItem('sfj_logged_in_member');
+        localStorage.removeItem('airline_logged_in_member');
       }
     }
   }, []);
@@ -62,7 +62,7 @@ function App() {
           const updated = data.members.find((m: any) => m.member_number === loggedInMember.member_number);
           if (updated) {
             setLoggedInMember(updated);
-            localStorage.setItem('sfj_logged_in_member', JSON.stringify(updated));
+            localStorage.setItem('airline_logged_in_member', JSON.stringify(updated));
             console.log('[App] Miles successfully updated: ', updated.miles);
           }
         }
@@ -78,7 +78,7 @@ function App() {
     if (loggedInMember) {
       trackEvent('logout', { member_number: loggedInMember.member_number });
     }
-    localStorage.removeItem('sfj_logged_in_member');
+    localStorage.removeItem('airline_logged_in_member');
     setLoggedInMember(null);
     window.location.hash = ''; // Redirect to home
   };
@@ -104,10 +104,10 @@ function App() {
             {/* Hero Visual Banner */}
             <Hero />
             
-            {/* News, Promotions and Features (sfj-info-section) */}
+            {/* News, Promotions and Features */}
             <NewsCampaigns />
 
-            {/* Fares (そら旅価格) */}
+            {/* Fares (割引価格) */}
             <Fares />
 
             {/* Inflight Services (機内サービス) */}

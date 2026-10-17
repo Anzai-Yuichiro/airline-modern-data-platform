@@ -43,7 +43,7 @@ export const LoginPage = ({ onLoginSuccess }: LoginPageProps) => {
       trackEvent('login_success', { member_number: data.member.member_number });
       
       // Save member info to localStorage
-      localStorage.setItem('sfj_logged_in_member', JSON.stringify(data.member));
+      localStorage.setItem('airline_logged_in_member', JSON.stringify(data.member));
       
       // Trigger success callback (updates App state)
       onLoginSuccess(data.member);
@@ -62,9 +62,9 @@ export const LoginPage = ({ onLoginSuccess }: LoginPageProps) => {
     <div className="login-page">
       <div className="login-container">
         <div className="login-header">
-          <span className="brand-logo">STAR LINK</span>
+          <span className="brand-logo">AERO MILES</span>
           <h2>会員ログイン</h2>
-          <p className="subtitle">STARLINK会員番号、または登録メールアドレスでログインできます。</p>
+          <p className="subtitle">AERO MILES会員番号、または登録メールアドレスでログインできます。</p>
         </div>
 
         {error && <div className="error-alert">{error}</div>}

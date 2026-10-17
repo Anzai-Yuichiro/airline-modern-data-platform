@@ -41,7 +41,7 @@ Raw Sources (Kafka / Pub/Sub)
 ## 2. dbt プロジェクト構成案
 
 ```
-dbt_starflyer/
+dbt_airline/
 ├── dbt_project.yml
 ├── profiles.yml
 ├── models/

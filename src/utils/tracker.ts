@@ -11,10 +11,10 @@ const generateUUID = (): string => {
 
 // Retrieve or generate a session ID that persists during the browser session
 const getSessionId = (): string => {
-  let sessionId = sessionStorage.getItem('sfj_session_id');
+  let sessionId = sessionStorage.getItem('airline_session_id');
   if (!sessionId) {
     sessionId = generateUUID();
-    sessionStorage.setItem('sfj_session_id', sessionId);
+    sessionStorage.setItem('airline_session_id', sessionId);
   }
   return sessionId;
 };
@@ -34,7 +34,7 @@ interface AnalyticsEvent {
 export const trackEvent = (eventName: string, properties: Record<string, any> = {}) => {
   let memberNumber: string | undefined = undefined;
   try {
-    const memberStr = localStorage.getItem('sfj_logged_in_member');
+    const memberStr = localStorage.getItem('airline_logged_in_member');
     if (memberStr) {
       const member = JSON.parse(memberStr);
       memberNumber = member.member_number || undefined;

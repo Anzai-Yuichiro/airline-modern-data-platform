@@ -106,7 +106,7 @@ export const WebAnalyticsPage = () => {
       <div className="analytics-error">
         <h3>⚠️ 接続エラー</h3>
         <p>{error}</p>
-        <button onClick={fetchAnalyticsData} className="retry-btn">再試行</button>
+        <button onClick={() => fetchAnalyticsData()} className="retry-btn">再試行</button>
       </div>
     );
   }
@@ -218,7 +218,7 @@ export const WebAnalyticsPage = () => {
           <h2 className="view-title">Webアナリティクス</h2>
           <p className="view-subtitle">シミュレータサイトでのユーザーアクションとファネルCVR分析</p>
         </div>
-        <button className="refresh-btn" onClick={fetchAnalyticsData}>🔄 リフレッシュ</button>
+        <button className="refresh-btn" onClick={() => fetchAnalyticsData()}>🔄 リフレッシュ</button>
       </div>
 
       {isDataEmpty && (

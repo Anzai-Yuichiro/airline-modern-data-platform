@@ -75,7 +75,7 @@ export const Header = ({ loggedInMember, onLogout }: { loggedInMember: any | nul
 
   const currentMenu = activeCategory === 'domestic' ? domesticMenu : internationalMenu;
 
-  // Render content of mega drawer based on active tab (strictly matching official starflyer.jp sitemap)
+  // Render content of mega drawer based on active tab (matching standard airline sitemap)
   const renderMegaDrawerContent = () => {
     if (!activeDrawerTab) return null;
 
@@ -112,7 +112,7 @@ export const Header = ({ loggedInMember, onLogout }: { loggedInMember: any | nul
                 </ul>
                 <div className="drawer-promo-box" style={{ marginTop: '16px' }}>
                   <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-                    スターフライヤーの早期購入割引「そら旅」は、早めのご予約でおトクになります。
+                    早期購入割引「エアロ得」は、早めのご予約でおトクになります。
                   </p>
                 </div>
               </div>
@@ -319,13 +319,13 @@ export const Header = ({ loggedInMember, onLogout }: { loggedInMember: any | nul
           <div className="mega-drawer-panel">
             <div className="mega-drawer-columns">
               <div className="mega-drawer-col">
-                <h4>⭐ STAR LINKについて</h4>
+                <h4>⭐ AERO MILESについて</h4>
                 <ul>
                   <li><a href="#mile-benefit" onClick={closeMegaDrawer}>会員ログインのメリット</a></li>
-                  <li><a href="#mile-status" onClick={closeMegaDrawer}>ベガ/アルタイルの特典</a></li>
+                  <li><a href="#mile-status" onClick={closeMegaDrawer}>ステータス特典</a></li>
                   <li><a href="#mile-alliance" onClick={closeMegaDrawer}>提携サービスを利用する</a></li>
-                  <li><a href="#mile-register" onClick={closeMegaDrawer}>STAR LINK会員新規入会</a></li>
-                  <li><a href="#mile-terms" onClick={closeMegaDrawer}>STAR LINK会員規約</a></li>
+                  <li><a href="#mile-register" onClick={closeMegaDrawer}>AERO MILES会員新規入会</a></li>
+                  <li><a href="#mile-terms" onClick={closeMegaDrawer}>AERO MILES会員規約</a></li>
                   <li><a href="#mile-app" onClick={closeMegaDrawer}>公式アプリのご案内</a></li>
                   <li><a href="#mile-coupon" onClick={closeMegaDrawer}>クーポンのご利用方法</a></li>
                 </ul>
@@ -337,7 +337,7 @@ export const Header = ({ loggedInMember, onLogout }: { loggedInMember: any | nul
                   <li><a href="#earn-regist" onClick={closeMegaDrawer}>フライトマイルを登録する</a></li>
                   <li><a href="#earn-life" onClick={closeMegaDrawer}>暮らしで貯める</a></li>
                   <li><a href="#earn-limit" onClick={closeMegaDrawer}>マイルの有効期限</a></li>
-                  <li><a href="#earn-card" onClick={closeMegaDrawer}>スターフライヤーカードについて</a></li>
+                  <li><a href="#earn-card" onClick={closeMegaDrawer}>提携クレジットカードについて</a></li>
                 </ul>
               </div>
               <div className="mega-drawer-col">
@@ -368,7 +368,7 @@ export const Header = ({ loggedInMember, onLogout }: { loggedInMember: any | nul
           {/* Logo */}
           <div className="sfj-logo">
             <a href="/" onClick={() => { setActiveDrawerTab(null); trackEvent('click_logo'); }}>
-              <span className="logo-text">STARFLYER</span>
+              <span className="logo-text">AERO CONNECT</span>
             </a>
           </div>
 
@@ -394,7 +394,7 @@ export const Header = ({ loggedInMember, onLogout }: { loggedInMember: any | nul
             {loggedInMember ? (
               <div className="sfj-member-status">
                 <span className="member-info">
-                  STAR LINK会員: <strong className="member-name">{loggedInMember.last_name_kanji} {loggedInMember.first_name_kanji} 様</strong>
+                  AERO MILES会員: <strong className="member-name">{loggedInMember.last_name_kanji} {loggedInMember.first_name_kanji} 様</strong>
                   <span className="member-num">({loggedInMember.member_number})</span>
                 </span>
                 <span className="member-miles">
@@ -497,7 +497,7 @@ export const Header = ({ loggedInMember, onLogout }: { loggedInMember: any | nul
             {loggedInMember ? (
               <>
                 <li className="mobile-member-info">
-                  <div className="label">STAR LINK会員</div>
+                  <div className="label">AERO MILES会員</div>
                   <div className="name">{loggedInMember.last_name_kanji} {loggedInMember.first_name_kanji} 様</div>
                   <div className="num">({loggedInMember.member_number})</div>
                   <div className="miles">保有マイル: <strong>{loggedInMember.miles.toLocaleString()}</strong> マイル</div>

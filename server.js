@@ -109,34 +109,34 @@ const db = new duckdb.Database(DB_FILE, (err) => {
           console.log('[DuckDB Seeding] Seeding default flight routes...');
           const values = [
             // Domestic HND <=> KKJ
-            "('SFJ071', '71', 'HND', '羽田（東京）', 'KKJ', '北九州', '07:40', '09:15', 'domestic', 12800)",
-            "('SFJ077', '77', 'HND', '羽田（東京）', 'KKJ', '北九州', '11:15', '12:55', 'domestic', 14800)",
-            "('SFJ087', '87', 'HND', '羽田（東京）', 'KKJ', '北九州', '18:30', '20:10', 'domestic', 15800)",
-            "('SFJ070', '70', 'KKJ', '北九州', 'HND', '羽田（東京）', '08:00', '09:35', 'domestic', 12800)",
-            "('SFJ076', '76', 'KKJ', '北九州', 'HND', '羽田（東京）', '12:00', '13:35', 'domestic', 14800)",
-            "('SFJ086', '86', 'KKJ', '北九州', 'HND', '羽田（東京）', '18:00', '19:35', 'domestic', 15800)",
+            "('AL071', '71', 'HND', '羽田（東京）', 'KKJ', '北九州', '07:40', '09:15', 'domestic', 12800)",
+            "('AL077', '77', 'HND', '羽田（東京）', 'KKJ', '北九州', '11:15', '12:55', 'domestic', 14800)",
+            "('AL087', '87', 'HND', '羽田（東京）', 'KKJ', '北九州', '18:30', '20:10', 'domestic', 15800)",
+            "('AL070', '70', 'KKJ', '北九州', 'HND', '羽田（東京）', '08:00', '09:35', 'domestic', 12800)",
+            "('AL076', '76', 'KKJ', '北九州', 'HND', '羽田（東京）', '12:00', '13:35', 'domestic', 14800)",
+            "('AL086', '86', 'KKJ', '北九州', 'HND', '羽田（東京）', '18:00', '19:35', 'domestic', 15800)",
             
             // Domestic HND <=> FUK
-            "('SFJ041', '41', 'HND', '羽田（東京）', 'FUK', '福岡', '06:25', '08:15', 'domestic', 13500)",
-            "('SFJ047', '47', 'HND', '羽田（東京）', 'FUK', '福岡', '12:00', '13:50', 'domestic', 15500)",
-            "('SFJ040', '40', 'FUK', '福岡', 'HND', '羽田（東京）', '08:00', '09:40', 'domestic', 13500)",
-            "('SFJ046', '46', 'FUK', '福岡', 'HND', '羽田（東京）', '14:00', '15:40', 'domestic', 15500)",
+            "('AL041', '41', 'HND', '羽田（東京）', 'FUK', '福岡', '06:25', '08:15', 'domestic', 13500)",
+            "('AL047', '47', 'HND', '羽田（東京）', 'FUK', '福岡', '12:00', '13:50', 'domestic', 15500)",
+            "('AL040', '40', 'FUK', '福岡', 'HND', '羽田（東京）', '08:00', '09:40', 'domestic', 13500)",
+            "('AL046', '46', 'FUK', '福岡', 'HND', '羽田（東京）', '14:00', '15:40', 'domestic', 15500)",
 
             // Domestic HND <=> KIX
-            "('SFJ021', '21', 'HND', '羽田（東京）', 'KIX', '関西（大阪）', '09:10', '10:25', 'domestic', 11000)",
-            "('SFJ020', '20', 'KIX', '関西（大阪）', 'HND', '羽田（東京）', '07:05', '08:15', 'domestic', 11000)",
+            "('AL021', '21', 'HND', '羽田（東京）', 'KIX', '関西（大阪）', '09:10', '10:25', 'domestic', 11000)",
+            "('AL020', '20', 'KIX', '関西（大阪）', 'HND', '羽田（東京）', '07:05', '08:15', 'domestic', 11000)",
 
             // Domestic HND <=> UBJ
-            "('SFJ011', '11', 'HND', '羽田（東京）', 'UBJ', '山口宇部', '11:00', '12:40', 'domestic', 14000)",
-            "('SFJ012', '12', 'UBJ', '山口宇部', 'HND', '羽田（東京）', '13:15', '14:50', 'domestic', 14000)",
+            "('AL011', '11', 'HND', '羽田（東京）', 'UBJ', '山口宇部', '11:00', '12:40', 'domestic', 14000)",
+            "('AL012', '12', 'UBJ', '山口宇部', 'HND', '羽田（東京）', '13:15', '14:50', 'domestic', 14000)",
 
             // International KKJ <=> TPE
-            "('SFJ801', '801', 'KKJ', '北九州', 'TPE', '台北（桃園）', '15:00', '16:30', 'international', 22000)",
-            "('SFJ802', '802', 'TPE', '台北（桃園）', 'KKJ', '北九州', '17:30', '21:00', 'international', 24000)",
+            "('AL801', '801', 'KKJ', '北九州', 'TPE', '台北（桃園）', '15:00', '16:30', 'international', 22000)",
+            "('AL802', '802', 'TPE', '台北（桃園）', 'KKJ', '北九州', '17:30', '21:00', 'international', 24000)",
 
             // International NGO <=> TPE
-            "('SFJ811', '811', 'NGO', '中部（名古屋）', 'TPE', '台北（桃園）', '08:30', '10:45', 'international', 23000)",
-            "('SFJ812', '812', 'TPE', '台北（桃園）', 'NGO', '中部（名古屋）', '11:45', '15:20', 'international', 25000)"
+            "('AL811', '811', 'NGO', '中部（名古屋）', 'TPE', '台北（桃園）', '08:30', '10:45', 'international', 23000)",
+            "('AL812', '812', 'TPE', '台北（桃園）', 'NGO', '中部（名古屋）', '11:45', '15:20', 'international', 25000)"
           ];
 
           const insertSql = `
@@ -180,7 +180,7 @@ const db = new duckdb.Database(DB_FILE, (err) => {
 
 // Initialize Kafka Client & Producer
 const kafka = new Kafka({
-  clientId: 'starflyer-gateway',
+  clientId: 'airline-gateway',
   brokers: ['localhost:9092'],
   retry: {
     initialRetryTime: 100,
@@ -871,7 +871,7 @@ app.get('/api/recommendations', async (req, res) => {
 
     // 2. Mileage-driven recommendation if member has enough miles (e.g. >= 4,500 miles)
     if (memberMiles >= 4500) {
-      const mileFlight = allFlights.find(f => f.flight_id === 'SFJ021' || f.departure_code === 'HND');
+      const mileFlight = allFlights.find(f => f.flight_id === 'AL021' || f.departure_code === 'HND');
       if (mileFlight && !recommendations.some(r => r.flight_id === mileFlight.flight_id)) {
         recommendations.push({
           ...mileFlight,

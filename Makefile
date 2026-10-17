@@ -24,7 +24,7 @@ help:
 	@echo "Database Commands:"
 	@echo "  make db-cli         - Open DuckDB CLI console in READ-ONLY mode"
 	@echo "  make db-schema      - Show tables and column definitions"
-	@echo "  make db-members     - Display all registered STAR LINK members"
+	@echo "  make db-members     - Display all registered AERO MILES members"
 	@echo "  make db-events      - Display the latest 20 actions (logs) in DB"
 	@echo "  make query Q=\"...\"   - Run a custom SQL query in read-only mode"
 	@echo "                        (e.g., make query Q=\"SELECT count(*) FROM events\")"
@@ -82,9 +82,9 @@ simulate:
 
 dbt-run:
 	@echo "Executing dbt models..."
-	cd dbt_starflyer && dbt run --profiles-dir .
+	cd dbt_airline && dbt run --profiles-dir .
 
 dbt-test:
 	@echo "Running dbt tests..."
-	cd dbt_starflyer && dbt test --profiles-dir .
+	cd dbt_airline && dbt test --profiles-dir .
 
